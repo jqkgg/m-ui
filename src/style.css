@@ -1,0 +1,21 @@
+@charset "UTF-8";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 组件库基础样式变量 */
+:root {
+  --m-primary-color: #409eff;
+  --m-success-color: #67c23a;
+  --m-warning-color: #e6a23c;
+  --m-danger-color: #f56c6c;
+  --m-info-color: #909399;
+  --m-text-color: #303133;
+  --m-border-color: #dcdfe6;
+  --m-border-radius: 4px;
+  --m-font-size-base: 14px;
+}
+
+/* 全局样式重置 */
+* {
+  box-sizing: border-box;
+}

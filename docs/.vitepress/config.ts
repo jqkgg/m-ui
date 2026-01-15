@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'M-UI',
   description: '一个基于 Vue3 的组件库',
-  base: '/',
+  base: '/m-ui/',
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },

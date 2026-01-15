@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
 import type { InputProps } from './types'
 
 const props = withDefaults(defineProps<InputProps>(), {

@@ -18,7 +18,8 @@ const components = [MButton, MInput]
 // 安装函数
 const install = (app: App) => {
   components.forEach(component => {
-    app.component(component.name || component.__name, component)
+    const name = component.name || component.__name || 'UnknownComponent'
+    app.component(name, component)
   })
 }
 

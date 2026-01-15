@@ -4,7 +4,7 @@
     
     <section class="demo-section">
       <h2>Button 按钮</h2>
-      <div class="demo-row">
+      <div class="flex gap-4 mb-4">
         <MButton>默认按钮</MButton>
         <MButton type="primary">主要按钮</MButton>
         <MButton type="success">成功按钮</MButton>

@@ -8,7 +8,7 @@
 npm run dev:docs
 ```
 
-访问 http://localhost:5173/m-ui/ 查看文档。
+访问 http://localhost:5173/m-ui/ 查看文档（注意：开发服务器端口可能不同）。
 
 ## 构建文档
 

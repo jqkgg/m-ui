@@ -4,6 +4,7 @@ export default defineConfig({
   title: 'M-UI',
   description: '一个基于 Vue3 的组件库',
   base: '/m-ui/',
+  ignoreDeadLinks: true,
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },

@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'docs/**'
-      - '.vitepress/**'
+      - 'docs/.vitepress/**'
       - '.github/workflows/docs.yml'
   workflow_dispatch:
 
@@ -35,10 +35,47 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: List files
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Directory structure:"
+          ls -la
+          echo "Docs directory:"
+          ls -la docs/ || echo "docs directory not found"
+          echo "VitePress config:"
+          ls -la docs/.vitepress/ || echo ".vitepress directory not found"
 
       - name: Build docs
-        run: npm run build:docs
+        run: |
+          echo "Building documentation..."
+          npm run build:docs || {
+            echo "Build failed! Checking for errors..."
+            echo "VitePress version:"
+            npx vitepress --version || echo "VitePress not found"
+            echo "Node version:"
+            node --version
+            echo "NPM version:"
+            npm --version
+            exit 1
+          }
+        continue-on-error: false
+
+      - name: Check build output
+        run: |
+          if [ ! -d "docs/.vitepress/dist" ]; then
+            echo "Error: docs/.vitepress/dist directory not found!"
+            exit 1
+          fi
+          echo "Build output found:"
+          ls -la docs/.vitepress/dist/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

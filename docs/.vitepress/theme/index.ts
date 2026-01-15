@@ -1,5 +1,20 @@
 import DefaultTheme from 'vitepress/theme'
+import type { Theme } from 'vitepress'
+import { MButton, MInput } from '@jiangqiming/m-ui'
+import Demo from '../components/Demo.vue'
+import CodeBlock from '../components/CodeBlock.vue'
+import '../../../dist/style.css'
+import '../../../src/style.css'
 import './custom.css'
 
-export default DefaultTheme
+export default {
+  extends: DefaultTheme,
+  enhanceApp({ app }) {
+    // 注册组件
+    app.component('MButton', MButton)
+    app.component('MInput', MInput)
+    app.component('Demo', Demo)
+    app.component('CodeBlock', CodeBlock)
+  }
+} satisfies Theme
 

@@ -6,3 +6,49 @@
   --vp-c-brand-darker: #2b85e4;
 }
 
+/* 确保组件样式能够正确应用，覆盖 VitePress 默认样式 */
+.demo-container button.m-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  border: 1px solid !important;
+  padding: 0.75rem 1.25rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  border-radius: 4px !important;
+  transition: all 0.3s !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+.demo-container input.m-input__inner {
+  display: inline-block !important;
+  width: 100% !important;
+  height: 2.5rem !important;
+  padding: 0 1rem !important;
+  border: 1px solid !important;
+  border-radius: 4px !important;
+  font-size: 0.875rem !important;
+  transition: all 0.2s !important;
+}
+
+/* 确保组件样式优先级 */
+.demo-container .m-button,
+.demo-container .m-input {
+  all: unset;
+  display: revert;
+}
+
+/* 按钮样式增强 */
+.m-button {
+  font-family: inherit;
+  line-height: 1;
+}
+
+/* 输入框样式增强 */
+.m-input__inner {
+  font-family: inherit;
+}
+

@@ -36,30 +36,76 @@ app.mount('#app')
 ### 按需引入
 
 ```javascript
-import { MButton, MInput } from '@jiangqiming/m-ui'
+import { MButton, MInput, MChartBar } from '@jiangqiming/m-ui'
 import '@jiangqiming/m-ui/style.css'
+```
+
+### 依赖安装
+
+组件库依赖以下包，使用前请确保已安装：
+
+```bash
+# Vue 3（必需）
+npm install vue@^3.0.0
+
+# ECharts（ChartBar 组件需要）
+npm install echarts@^5.0.0
 ```
 
 ## 使用示例
 
+### Button 按钮
+
 ```vue
 <template>
-  <div>
-    <MButton type="primary" @click="handleClick">主要按钮</MButton>
-    <MInput v-model="value" placeholder="请输入内容" />
-  </div>
+  <MButton type="primary" @click="handleClick">主要按钮</MButton>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { MButton, MInput } from '@jiangqiming/m-ui'
-
-const value = ref('')
+import { MButton } from '@jiangqiming/m-ui'
 
 const handleClick = () => {
   console.log('按钮被点击')
 }
 </script>
+```
+
+### Input 输入框
+
+```vue
+<template>
+  <MInput v-model="value" placeholder="请输入内容" />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { MInput } from '@jiangqiming/m-ui'
+
+const value = ref('')
+</script>
+```
+
+### ChartBar 柱状图
+
+```vue
+<template>
+  <MChartBar
+    :series="[
+      { name: '系列1', data: [100, 200, 300, 400, 500] }
+    ]"
+    :categories="['类别1', '类别2', '类别3', '类别4', '类别5']"
+  />
+</template>
+
+<script setup>
+import { MChartBar } from '@jiangqiming/m-ui'
+</script>
+```
+
+**注意**：使用 ChartBar 组件前，请确保已安装 `echarts`：
+
+```bash
+npm install echarts@^5.0.0
 ```
 
 ## 开发
@@ -85,6 +131,7 @@ npm run build:docs
 
 - Button 按钮
 - Input 输入框
+- ChartBar 柱状图
 
 更多组件正在开发中...
 

@@ -1,6 +1,6 @@
 {
   "name": "@jiangqiming/m-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个基于 Vue3 的组件库",
   "type": "module",
   "main": "./dist/m-ui.umd.cjs",
@@ -48,6 +48,7 @@
     "vue": "^3.0.0"
   },
   "devDependencies": {
+    "@types/node": "^25.0.9",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vueuse/core": "^10.7.0",
     "autoprefixer": "^10.4.17",

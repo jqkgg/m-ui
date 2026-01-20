@@ -1,10 +1,18 @@
 import { defineConfig } from 'vitepress'
+import { resolve } from 'path'
 
 export default defineConfig({
   title: 'M-UI',
   description: '一个基于 Vue3 的组件库',
   base: '/m-ui/',
   ignoreDeadLinks: true,
+  vite: {
+    resolve: {
+      alias: {
+        '@jiangqiming/m-ui': resolve(__dirname, '../../src/index.ts')
+      }
+    }
+  },
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },

@@ -3,7 +3,6 @@ import type { Theme } from 'vitepress'
 import { MButton, MInput } from '@jiangqiming/m-ui'
 import Demo from '../components/Demo.vue'
 import CodeBlock from '../components/CodeBlock.vue'
-import '../../../dist/style.css'
 import '../../../src/style.css'
 import './custom.css'
 

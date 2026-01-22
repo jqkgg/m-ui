@@ -3,6 +3,8 @@
     ref="chartContainer"
     :class="['m-chart-bar-3d', { 'm-chart-bar-3d--dark': props.darkMode }]"
     :style="{ width: computedWidth, height: computedHeight, backgroundColor: props.backgroundColor }"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
   ></div>
 </template>
 
@@ -50,10 +52,18 @@ const props = withDefaults(defineProps<ChartBar3DProps>(), {
   }),
   depth: 20,
   labelFormatter: undefined,
+  scrollThreshold: 10, // 默认超过10条数据启用滚动
+  scrollSpeed: 1, // 每次滚动1个数据项
+  scrollInterval: 2000, // 每2秒滚动一次
+  enableScroll: undefined, // undefined 表示自动判断
+  visibleCount: 8, // 默认显示8个数据项
 });
 
 const chartContainer = ref<HTMLDivElement | null>(null);
 let chartInstance: echarts.ECharts | null = null;
+let scrollTimer: ReturnType<typeof setInterval> | null = null;
+const isHovering = ref(false);
+const currentStartIndex = ref(0);
 
 // 3D效果的偏移量
 const offsetX = computed(() => {
@@ -159,7 +169,27 @@ const computedHeight = computed(() => {
   if (typeof props.height === "number") {
     return `${props.height}px`;
   }
+  if (props.height === "auto") {
+    // 根据类别数量动态计算高度
+    const categoryCount = processedData.value.length;
+    const visibleItems = shouldScroll.value ? props.visibleCount : categoryCount;
+    return `${Math.max(300, visibleItems * 60)}px`;
+  }
   return props.height;
+});
+
+// 判断是否应该启用滚动
+const shouldScroll = computed(() => {
+  if (props.enableScroll !== undefined) {
+    return props.enableScroll;
+  }
+  const dataCount = processedData.value.length;
+  return dataCount > props.scrollThreshold;
+});
+
+// 获取总数据量
+const totalCount = computed(() => {
+  return processedData.value.length;
 });
 
 // 处理数据格式
@@ -261,6 +291,22 @@ const buildOption = (): echarts.EChartsOption => {
   // 文本颜色
   const textColor = props.darkMode ? "#E6F7FF" : "#333333";
   const axisLineColor = props.darkMode ? "#5E8FA8" : "#999999";
+
+  // 计算滚动相关的数据
+  const dataZoomConfig =
+    shouldScroll.value && totalCount.value > 0
+      ? {
+          type: "slider" as const,
+          show: false, // 不显示滚动条
+          start: Math.min((currentStartIndex.value / totalCount.value) * 100, 100),
+          end: Math.min(
+            ((currentStartIndex.value + props.visibleCount) / totalCount.value) * 100,
+            100
+          ),
+          filterMode: "filter" as const,
+          xAxisIndex: 0,
+        }
+      : undefined;
 
   const option: echarts.EChartsOption = {
     backgroundColor,
@@ -418,6 +464,7 @@ const buildOption = (): echarts.EChartsOption => {
         data: data.map((item: ChartBar3DDataItem) => item.value),
       },
     ],
+    dataZoom: dataZoomConfig ? [dataZoomConfig] : undefined,
   };
 
   return option;
@@ -482,6 +529,68 @@ watch(
   }
 );
 
+// 滚动处理函数
+const startScroll = () => {
+  if (!shouldScroll.value || isHovering.value || totalCount.value === 0) {
+    return;
+  }
+
+  // 清理之前的定时器
+  stopScroll();
+
+  scrollTimer = setInterval(() => {
+    if (!chartInstance || isHovering.value || totalCount.value === 0) {
+      return;
+    }
+
+    // 计算下一个起始位置
+    currentStartIndex.value += props.scrollSpeed;
+
+    // 如果滚动到底部，重置到开始位置
+    if (currentStartIndex.value + props.visibleCount >= totalCount.value) {
+      currentStartIndex.value = 0;
+    }
+
+    // 更新图表
+    try {
+      const option = buildOption();
+      chartInstance.setOption(option, false);
+    } catch (error) {
+      console.error("ChartBar3D scroll error:", error);
+    }
+  }, props.scrollInterval);
+};
+
+// 停止滚动
+const stopScroll = () => {
+  if (scrollTimer) {
+    clearInterval(scrollTimer);
+    scrollTimer = null;
+  }
+};
+
+// 处理鼠标进入
+const handleMouseEnter = () => {
+  isHovering.value = true;
+  stopScroll();
+};
+
+// 处理鼠标离开
+const handleMouseLeave = () => {
+  isHovering.value = false;
+  if (shouldScroll.value) {
+    startScroll();
+  }
+};
+
+// 初始化滚动
+const initScroll = () => {
+  currentStartIndex.value = 0;
+  if (shouldScroll.value) {
+    startScroll();
+  }
+};
+
 onMounted(() => {
   // 使用 nextTick 确保 DOM 已经渲染完成
   nextTick(() => {
@@ -507,11 +616,32 @@ watch(
   ],
   () => {
     updateChart();
+    // 数据变化时重新初始化滚动
+    if (shouldScroll.value) {
+      initScroll();
+    } else {
+      stopScroll();
+    }
   },
   { deep: true }
 );
 
+// 监听滚动配置变化
+watch(
+  () => [shouldScroll.value, props.scrollSpeed, props.scrollInterval, props.visibleCount],
+  () => {
+    if (shouldScroll.value) {
+      initScroll();
+    } else {
+      stopScroll();
+    }
+  }
+);
+
 onBeforeUnmount(() => {
+  // 清理定时器
+  stopScroll();
+
   // 清理图表实例
   if (chartInstance) {
     chartInstance.dispose();

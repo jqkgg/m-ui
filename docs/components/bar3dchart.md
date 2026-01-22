@@ -37,6 +37,13 @@ const showLabel = ref(true)
 const unit = ref('家')
 const height = ref(400)
 const yAxisMax = ref(300)
+
+// 滚动示例数据
+const scrollData = ref([120, 200, 150, 80, 250, 180, 220, 160, 300, 140, 190, 210, 170, 230, 200])
+const scrollCategories = ref([
+  '类别1', '类别2', '类别3', '类别4', '类别5', '类别6', '类别7', '类别8',
+  '类别9', '类别10', '类别11', '类别12', '类别13', '类别14', '类别15'
+])
 </script>
 
 ## 基础用法
@@ -429,6 +436,47 @@ import { MChartBar3D } from '@jqkgg/m-ui'
 ```
 </CodeBlock>
 
+## 滚动展示
+
+当数据量较大时，组件支持自动滚动展示。鼠标悬浮时暂停滚动，移开后恢复滚动。
+
+<Demo>
+  <div style="width: 100%;">
+    <MChartBar3D
+      :data="scrollData"
+      :categories="scrollCategories"
+      :scroll-threshold="10"
+      :scroll-speed="1"
+      :scroll-interval="1000"
+      :visible-count="8"
+      background-color="rgba(0, 0, 0, 0.3)"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartBar3D
+    :data="[120, 200, 150, 80, 250, 180, 220, 160, 300, 140, 190, 210, 170, 230, 200]"
+    :categories="[
+      '类别1', '类别2', '类别3', '类别4', '类别5', '类别6', '类别7', '类别8',
+      '类别9', '类别10', '类别11', '类别12', '类别13', '类别14', '类别15'
+    ]"
+    :scroll-threshold="10"
+    :scroll-speed="1"
+    :scroll-interval="2000"
+    :visible-count="8"
+  />
+</template>
+
+<script setup>
+import { MChartBar3D } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
 ## 自定义背景和内边距
 
 通过 `background-color` 和 `grid` 属性可以自定义图表的背景色和内边距。
@@ -499,6 +547,11 @@ import { MChartBar3D } from '@jqkgg/m-ui'
 | grid | 图表内边距配置 | object | — | `{ left: '10%', right: '10%', top: '10%', bottom: '15%' }` |
 | depth | 3D深度（影响3D视觉效果） | number | — | `20` |
 | labelFormatter | 标签格式化函数 | (value: number, index: number) => string | — | `undefined` |
+| scrollThreshold | 启用滚动的数据量阈值，超过此数量自动启用滚动 | number | — | `10` |
+| scrollSpeed | 滚动速度（每次滚动的数据项数量） | number | — | `1` |
+| scrollInterval | 滚动间隔（毫秒） | number | — | `2000` |
+| enableScroll | 是否启用滚动（undefined 表示自动判断） | boolean \| undefined | — | `undefined` |
+| visibleCount | 每次显示的数据项数量 | number | — | `8` |
 
 ### ChartBar3DDataItem
 

@@ -64,5 +64,15 @@ export interface ChartBar3DProps {
   depth?: number
   /** 标签格式化函数 */
   labelFormatter?: (value: number, index: number) => string
+  /** 启用滚动的数据量阈值，超过此数量自动启用滚动 */
+  scrollThreshold?: number
+  /** 滚动速度（每次滚动的数据项数量） */
+  scrollSpeed?: number
+  /** 滚动间隔（毫秒） */
+  scrollInterval?: number
+  /** 是否启用滚动（undefined 表示自动判断） */
+  enableScroll?: boolean
+  /** 每次显示的数据项数量 */
+  visibleCount?: number
 }
 

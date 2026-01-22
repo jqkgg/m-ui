@@ -95,16 +95,30 @@ import { MScrollBox } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MScrollBox height="300px" :scroll-speed="100">
-    <div style="padding: 10px;">
-      <p>内容会自动滚动</p>
-      <!-- 更多内容... -->
+  <div>
+    <MScrollBox :height="height" :scroll-speed="scrollSpeed">
+      <div style="padding: 10px;">
+        <p style="margin: 10px 0;">滚动速度: {{ scrollSpeed }} 像素/秒</p>
+        <p style="margin: 10px 0;">这是第一行内容</p>
+        <p style="margin: 10px 0;">这是第二行内容</p>
+        <!-- 更多内容... -->
+      </div>
+    </MScrollBox>
+    <div style="margin-top: 16px;">
+      <label>
+        滚动速度: <input type="range" v-model="scrollSpeed" min="10" max="200" step="10" style="margin-left: 8px;" />
+        <span style="margin-left: 8px;">{{ scrollSpeed }} 像素/秒</span>
+      </label>
     </div>
-  </MScrollBox>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MScrollBox } from '@jqkgg/m-ui'
+
+const height = ref('300px')
+const scrollSpeed = ref(50)
 </script>
 ```
 </CodeBlock>
@@ -141,16 +155,28 @@ import { MScrollBox } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MScrollBox height="300px" :disabled="true">
-    <div style="padding: 10px;">
-      <p>滚动已禁用</p>
-      <!-- 更多内容... -->
+  <div>
+    <MScrollBox :height="height" :disabled="disabled">
+      <div style="padding: 10px;">
+        <p style="margin: 10px 0;">这是第一行内容</p>
+        <p style="margin: 10px 0;">这是第二行内容</p>
+        <!-- 更多内容... -->
+      </div>
+    </MScrollBox>
+    <div style="margin-top: 16px;">
+      <label>
+        <input type="checkbox" v-model="disabled" /> 禁用滚动
+      </label>
     </div>
-  </MScrollBox>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MScrollBox } from '@jqkgg/m-ui'
+
+const height = ref('300px')
+const disabled = ref(false)
 </script>
 ```
 </CodeBlock>
@@ -192,16 +218,33 @@ import { MScrollBox } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MScrollBox height="300px" direction="down">
-    <div style="padding: 10px;">
-      <p>内容会向下滚动</p>
-      <!-- 更多内容... -->
+  <div>
+    <MScrollBox :height="height" :direction="direction">
+      <div style="padding: 10px;">
+        <p style="margin: 10px 0;">滚动方向: {{ direction === 'up' ? '向上' : '向下' }}</p>
+        <p style="margin: 10px 0;">这是第一行内容</p>
+        <p style="margin: 10px 0;">这是第二行内容</p>
+        <!-- 更多内容... -->
+      </div>
+    </MScrollBox>
+    <div style="margin-top: 16px;">
+      <label>
+        滚动方向: 
+        <select v-model="direction" style="margin-left: 8px;">
+          <option value="up">向上</option>
+          <option value="down">向下</option>
+        </select>
+      </label>
     </div>
-  </MScrollBox>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MScrollBox } from '@jqkgg/m-ui'
+
+const height = ref('300px')
+const direction = ref('up')
 </script>
 ```
 </CodeBlock>
@@ -239,16 +282,29 @@ import { MScrollBox } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MScrollBox height="300px" :loop="false">
-    <div style="padding: 10px;">
-      <p>滚动到底部后会停止</p>
-      <!-- 更多内容... -->
+  <div>
+    <MScrollBox :height="height" :loop="loop">
+      <div style="padding: 10px;">
+        <p style="margin: 10px 0;">循环滚动: {{ loop ? '是' : '否' }}</p>
+        <p style="margin: 10px 0;">这是第一行内容</p>
+        <p style="margin: 10px 0;">这是第二行内容</p>
+        <!-- 更多内容... -->
+      </div>
+    </MScrollBox>
+    <div style="margin-top: 16px;">
+      <label>
+        <input type="checkbox" v-model="loop" /> 循环滚动
+      </label>
     </div>
-  </MScrollBox>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MScrollBox } from '@jqkgg/m-ui'
+
+const height = ref('300px')
+const loop = ref(true)
 </script>
 ```
 </CodeBlock>
@@ -286,16 +342,28 @@ import { MScrollBox } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MScrollBox height="400px">
-    <div style="padding: 10px;">
-      <p>自定义高度的滚动容器</p>
-      <!-- 更多内容... -->
+  <div>
+    <MScrollBox :height="height">
+      <div style="padding: 10px;">
+        <p style="margin: 10px 0;">容器高度: {{ height }}</p>
+        <p style="margin: 10px 0;">这是第一行内容</p>
+        <p style="margin: 10px 0;">这是第二行内容</p>
+        <!-- 更多内容... -->
+      </div>
+    </MScrollBox>
+    <div style="margin-top: 16px;">
+      <label>
+        容器高度: <input type="text" v-model="height" style="width: 100px; margin-left: 8px;" />
+      </label>
     </div>
-  </MScrollBox>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MScrollBox } from '@jqkgg/m-ui'
+
+const height = ref('300px')
 </script>
 ```
 </CodeBlock>

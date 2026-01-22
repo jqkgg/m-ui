@@ -57,11 +57,21 @@ import { MEllipsisText } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MEllipsisText content="很长很长的文本..." max-width="200px" :disable-tooltip="true" />
+  <div>
+    <MEllipsisText :content="content" :max-width="maxWidth" :disable-tooltip="disableTooltip" />
+    <div style="margin-top: 12px;">
+      <label><input type="checkbox" v-model="disableTooltip" /> 禁用悬浮提示</label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MEllipsisText } from '@jqkgg/m-ui'
+
+const content = ref('很长很长的文本...')
+const maxWidth = ref('200px')
+const disableTooltip = ref(false)
 </script>
 ```
 </CodeBlock>
@@ -84,15 +94,21 @@ import { MEllipsisText } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MEllipsisText
-    content="多行省略示例。这是第一行。这是第二行。这是第三行。"
-    :line-clamp="3"
-    max-width="300px"
-  />
+  <div>
+    <MEllipsisText :content="content" :line-clamp="lineClamp" max-width="300px" />
+    <div style="margin-top: 12px;">
+      <label>行数：</label>
+      <input type="number" v-model.number="lineClamp" min="1" max="5" style="width: 60px;" />
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MEllipsisText } from '@jqkgg/m-ui'
+
+const content = ref('多行省略示例。这是第一行。这是第二行。这是第三行。这是第四行。这是第五行。')
+const lineClamp = ref(3)
 </script>
 ```
 </CodeBlock>
@@ -141,11 +157,20 @@ import { MEllipsisText } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MEllipsisText content="很长很长的文本..." max-width="200px" :copyable="true" />
+  <div>
+    <MEllipsisText :content="content" max-width="200px" :copyable="copyable" />
+    <div style="margin-top: 12px;">
+      <label><input type="checkbox" v-model="copyable" /> 可复制</label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MEllipsisText } from '@jqkgg/m-ui'
+
+const content = ref('很长很长的文本...')
+const copyable = ref(false)
 </script>
 ```
 </CodeBlock>
@@ -173,11 +198,26 @@ import { MEllipsisText } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MEllipsisText content="很长很长的文本..." max-width="200px" placement="bottom" />
+  <div>
+    <MEllipsisText :content="content" max-width="200px" :placement="placement" />
+    <div style="margin-top: 12px;">
+      <label>位置：</label>
+      <select v-model="placement" style="margin-left: 8px;">
+        <option value="top">top</option>
+        <option value="bottom">bottom</option>
+        <option value="left">left</option>
+        <option value="right">right</option>
+      </select>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MEllipsisText } from '@jqkgg/m-ui'
+
+const content = ref('很长很长的文本...')
+const placement = ref('top')
 </script>
 ```
 </CodeBlock>
@@ -200,11 +240,21 @@ import { MEllipsisText } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MEllipsisText content="很长很长的文本..." max-width="200px" tag="div" />
+  <div>
+    <MEllipsisText :content="content" :max-width="maxWidth" tag="div" />
+    <div style="margin-top: 12px;">
+      <label>maxWidth: </label>
+      <input type="text" v-model="maxWidth" style="width: 100px;" />
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MEllipsisText } from '@jqkgg/m-ui'
+
+const content = ref('很长很长的文本...')
+const maxWidth = ref('200px')
 </script>
 ```
 </CodeBlock>

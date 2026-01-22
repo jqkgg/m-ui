@@ -68,16 +68,25 @@ import { MResponsivePage } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MResponsivePage :fullscreen="true">
-    <div style="padding: 20px;">
-      <h3>全屏模式</h3>
-      <p>容器会占满整个视口</p>
-    </div>
-  </MResponsivePage>
+  <div style="width: 100%; height: 400px; border: 1px solid #ddd; position: relative;">
+    <MResponsivePage :fullscreen="fullscreen" :background-color="backgroundColor">
+      <div style="padding: 20px;">
+        <h3 style="margin: 0 0 16px 0;">全屏模式示例</h3>
+        <p>设置 fullscreen 为 true 时，容器会占满整个视口。</p>
+        <label>
+          <input type="checkbox" v-model="fullscreen" /> 启用全屏
+        </label>
+      </div>
+    </MResponsivePage>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MResponsivePage } from '@jqkgg/m-ui'
+
+const fullscreen = ref(false)
+const backgroundColor = ref('#f5f5f5')
 </script>
 ```
 </CodeBlock>
@@ -160,21 +169,46 @@ import { MResponsivePage } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MResponsivePage 
-    :enable-scale="true" 
-    base-width="1920" 
-    base-height="1080"
-    scale-mode="fit"
-  >
-    <div style="padding: 40px; width: 1920px; height: 1080px;">
-      <h2>1920×1080 设计稿</h2>
-      <p>内容会根据容器大小自动缩放</p>
+  <div>
+    <div style="width: 100%; height: 500px; border: 1px solid #ddd; overflow: hidden;">
+      <MResponsivePage 
+        :enable-scale="enableScale" 
+        :scale-mode="scaleMode"
+        base-width="1920" 
+        base-height="1080"
+        :background-color="backgroundColor"
+      >
+        <div style="padding: 40px; width: 1920px; height: 1080px; box-sizing: border-box;">
+          <h2 style="font-size: 48px; margin: 0 0 30px 0;">1920×1080 设计稿</h2>
+          <p style="font-size: 24px; margin: 0 0 20px 0;">这是基于 1920×1080 分辨率的设计</p>
+          <p style="font-size: 20px; color: #666;">启用缩放后，内容会根据容器大小自动缩放</p>
+        </div>
+      </MResponsivePage>
     </div>
-  </MResponsivePage>
+    <div style="margin-top: 16px;">
+      <label>
+        <input type="checkbox" v-model="enableScale" /> 启用缩放
+      </label>
+      <label style="margin-left: 16px;">
+        缩放模式: 
+        <select v-model="scaleMode" style="margin-left: 8px;">
+          <option value="fit">fit（适配）</option>
+          <option value="width">width（按宽度）</option>
+          <option value="height">height（按高度）</option>
+          <option value="both">both（同时）</option>
+        </select>
+      </label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MResponsivePage } from '@jqkgg/m-ui'
+
+const enableScale = ref(false)
+const scaleMode = ref('fit')
+const backgroundColor = ref('#f5f5f5')
 </script>
 ```
 </CodeBlock>
@@ -207,16 +241,33 @@ import { MResponsivePage } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MResponsivePage background-color="#f0f0f0" padding="30px">
-    <div>
-      <h3>自定义样式</h3>
-      <p>设置了背景色和内边距</p>
+  <div>
+    <div style="width: 100%; height: 400px; border: 1px solid #ddd;">
+      <MResponsivePage :background-color="backgroundColor" :padding="padding">
+        <div>
+          <h3 style="margin: 0 0 16px 0;">自定义样式</h3>
+          <p>背景色: {{ backgroundColor }}</p>
+          <p>内边距: {{ padding }}</p>
+        </div>
+      </MResponsivePage>
     </div>
-  </MResponsivePage>
+    <div style="margin-top: 16px;">
+      <label>
+        背景色: <input type="color" v-model="backgroundColor" style="margin-left: 8px;" />
+      </label>
+      <label style="margin-left: 16px;">
+        内边距: <input type="text" v-model="padding" style="width: 80px; margin-left: 8px;" />
+      </label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MResponsivePage } from '@jqkgg/m-ui'
+
+const backgroundColor = ref('#f5f5f5')
+const padding = ref('20px')
 </script>
 ```
 </CodeBlock>

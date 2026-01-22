@@ -156,18 +156,40 @@ import { MChartPie } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MChartPie
-    :data="[
-      { name: '系列1', value: 100 },
-      { name: '系列2', value: 200 },
-      { name: '系列3', value: 300 }
-    ]"
-    legend-position="left"
-  />
+  <div>
+    <div style="width: 100%; height: 400px;">
+      <MChartPie
+        :data="data"
+        :legend-position="legendPosition"
+      />
+    </div>
+    <div style="margin-top: 16px;">
+      <label>
+        <input type="radio" value="left" v-model="legendPosition" /> 左侧
+      </label>
+      <label style="margin-left: 16px;">
+        <input type="radio" value="right" v-model="legendPosition" /> 右侧
+      </label>
+      <label style="margin-left: 16px;">
+        <input type="radio" value="top" v-model="legendPosition" /> 顶部
+      </label>
+      <label style="margin-left: 16px;">
+        <input type="radio" value="bottom" v-model="legendPosition" /> 底部
+      </label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MChartPie } from '@jqkgg/m-ui'
+
+const data = ref([
+  { name: '系列1', value: 100 },
+  { name: '系列2', value: 200 },
+  { name: '系列3', value: 300 }
+])
+const legendPosition = ref('right')
 </script>
 ```
 </CodeBlock>
@@ -268,18 +290,31 @@ import { MChartPie } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MChartPie
-    :data="[
-      { name: '系列1', value: 100 },
-      { name: '系列2', value: 200 },
-      { name: '系列3', value: 300 }
-    ]"
-    :show-legend="false"
-  />
+  <div>
+    <div style="width: 100%; height: 400px;">
+      <MChartPie
+        :data="data"
+        :show-legend="showLegend"
+      />
+    </div>
+    <div style="margin-top: 16px;">
+      <label>
+        <input type="checkbox" v-model="showLegend" /> 显示图例
+      </label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MChartPie } from '@jqkgg/m-ui'
+
+const data = ref([
+  { name: '系列1', value: 100 },
+  { name: '系列2', value: 200 },
+  { name: '系列3', value: 300 }
+])
+const showLegend = ref(true)
 </script>
 ```
 </CodeBlock>
@@ -315,21 +350,42 @@ import { MChartPie } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MChartPie
-    :data="[
-      { name: '系列1', value: 100 },
-      { name: '系列2', value: 200 },
-      { name: '系列3', value: 300 }
-    ]"
-    :show-label="true"
-    label-position="outside"
-    :show-percent="true"
-    :show-value="true"
-  />
+  <div>
+    <div style="width: 100%; height: 400px;">
+      <MChartPie
+        :data="data"
+        :show-label="showLabel"
+        label-position="outside"
+        :show-percent="showPercent"
+        :show-value="showValue"
+      />
+    </div>
+    <div style="margin-top: 16px;">
+      <label>
+        <input type="checkbox" v-model="showLabel" /> 显示标签
+      </label>
+      <label style="margin-left: 16px;">
+        <input type="checkbox" v-model="showPercent" /> 显示百分比
+      </label>
+      <label style="margin-left: 16px;">
+        <input type="checkbox" v-model="showValue" /> 显示数值
+      </label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MChartPie } from '@jqkgg/m-ui'
+
+const data = ref([
+  { name: '系列1', value: 100 },
+  { name: '系列2', value: 200 },
+  { name: '系列3', value: 300 }
+])
+const showLabel = ref(true)
+const showPercent = ref(true)
+const showValue = ref(false)
 </script>
 ```
 </CodeBlock>
@@ -358,20 +414,33 @@ import { MChartPie } from '@jqkgg/m-ui'
 
 ```vue
 <template>
-  <MChartPie
-    :data="[
-      { name: '系列1', value: 100 },
-      { name: '系列2', value: 200 },
-      { name: '系列3', value: 300 }
-    ]"
-    inner-radius="50%"
-    radius="85%"
-    height="400px"
-  />
+  <div>
+    <div style="width: 100%; height: 400px;">
+      <MChartPie
+        :data="data"
+        :inner-radius="innerRadius"
+        radius="85%"
+        height="400px"
+      />
+    </div>
+    <div style="margin-top: 16px;">
+      <label>
+        内半径: <input type="text" v-model="innerRadius" style="width: 80px;" />
+      </label>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { MChartPie } from '@jqkgg/m-ui'
+
+const data = ref([
+  { name: '系列1', value: 100 },
+  { name: '系列2', value: 200 },
+  { name: '系列3', value: 300 }
+])
+const innerRadius = ref('60%')
 </script>
 ```
 </CodeBlock>

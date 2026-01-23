@@ -22,11 +22,11 @@ defineOptions({
 
 // 默认颜色范围（序时进度）
 const defaultRangesConfig: ChartMapCqRange[] = [
-  { min: -Infinity, max: -10, color: "#FF4D4F", label: "<-10%" },
-  { min: -10, max: 0, color: "#FF7A45", label: "-10% ~ 0" },
-  { min: 0, max: 10, color: "#FFD666", label: "0 ~ 10%" },
-  { min: 10, max: 50, color: "#1890FF", label: "10% ~ 50%" },
-  { min: 50, max: Infinity, color: "#52C41A", label: ">=50%" },
+  { min: -Infinity, max: -9, color: "#FF4D4F", label: "<-10" },
+  { min: -10, max: 0, color: "#FF7A45", label: "-10 ~ 0" },
+  { min: 1, max: 10, color: "#FFD666", label: "1 ~ 10" },
+  { min: 11, max: 50, color: "#1890FF", label: "11 ~ 50" },
+  { min: 51, max: Infinity, color: "#52C41A", label: ">50" },
 ];
 
 const props = withDefaults(defineProps<ChartMapCqProps>(), {

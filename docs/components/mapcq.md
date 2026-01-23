@@ -74,6 +74,7 @@ import chongqingMainGeoJson from '../../src/assets/geo/chongqing-main.json'
       :data="data1"
       :show-main-city-in-corner="showMainCity"
       :height="450"
+      legend-position="right"
     />
   </div>
 </Demo>

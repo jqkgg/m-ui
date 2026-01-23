@@ -2,7 +2,11 @@
   <div
     ref="chartContainer"
     :class="['m-chart-map-cq']"
-    :style="{ width: computedWidth, height: computedHeight, backgroundColor: backgroundColor }"
+    :style="{
+      width: computedWidth,
+      height: computedHeight,
+      backgroundColor: backgroundColor,
+    }"
   ></div>
 </template>
 
@@ -161,7 +165,9 @@ const loadDefaultGeoJson = async (): Promise<any> => {
     }
 
     // 方式2：从阿里云DataV API加载
-    const response = await fetch("https://geo.datav.aliyun.com/areas_v3/bound/500000_full.json");
+    const response = await fetch(
+      "https://geo.datav.aliyun.com/areas_v3/bound/500000_full.json"
+    );
     if (response.ok) {
       const geoData = await response.json();
       defaultGeoJson.value = geoData;
@@ -261,7 +267,7 @@ const registerMap = async () => {
     if (props.geoJson) {
       echarts.registerMap(props.mapName, props.geoJson);
       mapRegistered = true;
-      
+
       // 如果显示主城区，也需要注册主城区地图
       if (props.showMainCityInCorner) {
         const mainCityGeoData = await loadMainCityGeoJson();
@@ -281,7 +287,7 @@ const registerMap = async () => {
     if (geoData) {
       echarts.registerMap(props.mapName, geoData);
       mapRegistered = true;
-      
+
       // 如果显示主城区，也需要注册主城区地图
       if (props.showMainCityInCorner) {
         const mainCityGeoData = await loadMainCityGeoJson();
@@ -334,11 +340,12 @@ const processMapData = (data: ChartMapCqDataItem[]): ChartMapCqDataItem[] => {
 // 构建 ECharts 配置
 const buildOption = (): echarts.EChartsOption => {
   const processedData = processMapData(props.data || []);
-  
+
   // 转换数据格式，应用颜色
   const seriesData = processedData.map((item: ChartMapCqDataItem) => {
     // 如果有自定义颜色或数据值，使用计算的颜色；否则使用默认颜色
-    const color = item.color || (item.value !== undefined ? getColorByValue(item.value) : "#5b9bd5");
+    const color =
+      item.color || (item.value !== undefined ? getColorByValue(item.value) : "#5b9bd5");
     return {
       name: item.name,
       value: item.value,
@@ -356,8 +363,10 @@ const buildOption = (): echarts.EChartsOption => {
       },
       label: {
         // 主城区副本不显示标签；如果显示主城区地图，主城区的标签也不显示
-        show: props.showLabel && !item.name.endsWith("_main") && 
-              !(props.showMainCityInCorner && props.mainCityNames?.includes(item.name)),
+        show:
+          props.showLabel &&
+          !item.name.endsWith("_main") &&
+          !(props.showMainCityInCorner && props.mainCityNames?.includes(item.name)),
         color: props.labelStyle?.color || "#ffffff",
         fontSize: props.labelStyle?.fontSize || 12,
         fontWeight: props.labelStyle?.fontWeight || "normal",
@@ -366,74 +375,248 @@ const buildOption = (): echarts.EChartsOption => {
   });
 
   // 图例配置
-  const legendConfig = props.showLegend
-    ? {
-        show: true,
-        orient: (props.legendPosition === "left" || props.legendPosition === "right" ? "vertical" : "horizontal") as "vertical" | "horizontal",
-        left: props.legendPosition === "left" ? "left" : props.legendPosition === "right" ? "right" : "center",
-        top: props.legendPosition === "top" ? "top" : props.legendPosition === "bottom" ? "bottom" : "middle",
-        textStyle: {
-          color: "#333",
-          fontSize: 12,
-        },
-        data: ranges.value.map((range: ChartMapCqRange) => ({
-          name: range.label,
-          icon: "circle",
-          itemStyle: {
-            color: range.color,
+  const legendConfig =
+    props.showLegend && ranges.value.length > 0
+      ? {
+          show: true,
+          orient: (props.legendPosition === "left" || props.legendPosition === "right"
+            ? "vertical"
+            : "horizontal") as "vertical" | "horizontal",
+          left:
+            props.legendPosition === "left"
+              ? "left"
+              : props.legendPosition === "right"
+              ? "right"
+              : "center",
+          top:
+            props.legendPosition === "top"
+              ? "top"
+              : props.legendPosition === "bottom"
+              ? "bottom"
+              : "middle",
+          textStyle: {
+            color: "#333",
+            fontSize: 12,
           },
-        })),
-        formatter: (name: string) => {
-          const range = ranges.value.find((r: ChartMapCqRange) => r.label === name);
-          return range ? `${range.label}` : name;
-        },
-      }
-    : {
-        show: false,
-      };
+          // 使用字符串数组作为图例项名称
+          data: ranges.value.map((range: ChartMapCqRange) => range.label),
+          formatter: (name: string) => {
+            const range = ranges.value.find((r: ChartMapCqRange) => r.label === name);
+            return range ? range.label : name;
+          },
+          itemWidth: 14,
+          itemHeight: 14,
+          itemGap: 10,
+          selectedMode: false, // 禁用选择功能
+          // 为每个图例项设置图标和颜色
+          icon: "rect",
+          itemStyle: {
+            borderColor: "#fff",
+            borderWidth: 1,
+          },
+          // 使用 formatter 和 rich 来显示颜色
+          rich: ranges.value.reduce((acc: any, range: ChartMapCqRange, index: number) => {
+            acc[`color_${index}`] = {
+              width: 12,
+              height: 12,
+              backgroundColor: range.color,
+              borderRadius: 2,
+            };
+            return acc;
+          }, {}),
+        }
+      : props.showLegend
+      ? {
+          show: true,
+          orient: (props.legendPosition === "left" || props.legendPosition === "right"
+            ? "vertical"
+            : "horizontal") as "vertical" | "horizontal",
+          left:
+            props.legendPosition === "left"
+              ? "left"
+              : props.legendPosition === "right"
+              ? "right"
+              : "center",
+          top:
+            props.legendPosition === "top"
+              ? "top"
+              : props.legendPosition === "bottom"
+              ? "bottom"
+              : "middle",
+          textStyle: {
+            color: "#333",
+            fontSize: 12,
+          },
+        }
+      : {
+          show: false,
+        };
 
   // 特殊标注
-  const graphic = props.specialLabels?.map((label: any) => ({
-    type: "group",
-    left: label.position[0],
-    top: label.position[1],
-    children: [
-      {
-        type: "rect",
-        shape: {
-          width: 80,
-          height: 30,
-          r: 4,
+  const specialLabelsGraphic =
+    props.specialLabels?.map((label: any) => ({
+      type: "group",
+      left: label.position[0],
+      top: label.position[1],
+      children: [
+        {
+          type: "rect",
+          shape: {
+            width: 80,
+            height: 30,
+            r: 4,
+          },
+          style: {
+            fill: "rgba(24, 144, 255, 0.8)",
+            stroke: "#1890FF",
+            lineWidth: 1,
+          },
         },
-        style: {
-          fill: "rgba(24, 144, 255, 0.8)",
-          stroke: "#1890FF",
-          lineWidth: 1,
+        {
+          type: "text",
+          style: {
+            text: label.label || label.name,
+            fill: "#ffffff",
+            fontSize: 12,
+            fontWeight: "normal",
+          },
+          left: 40,
+          top: 15,
         },
-      },
-      {
-        type: "text",
-        style: {
-          text: label.label || label.name,
-          fill: "#ffffff",
-          fontSize: 12,
-          fontWeight: "normal",
-        },
-        left: 40,
-        top: 15,
-      },
-    ],
-  })) || [];
+      ],
+    })) || [];
+
+  // 手动绘制图例（使用 graphic 组件确保显示）
+  const legendGraphic =
+    props.showLegend && ranges.value.length > 0
+      ? (() => {
+          const isVertical =
+            props.legendPosition === "left" || props.legendPosition === "right";
+          const itemHeight = 20;
+          const itemGap = 8;
+          const iconSize = 14;
+          const padding = 15;
+          const textGap = 6;
+          const fontSize = 12;
+
+          // 估算每个图例项的宽度（图标 + 间距 + 文字）
+          const estimateTextWidth = (text: string) => text.length * fontSize * 0.6; // 粗略估算
+          const maxTextWidth = Math.max(
+            ...ranges.value.map((r: ChartMapCqRange) => estimateTextWidth(r.label))
+          );
+          const itemWidth = iconSize + textGap + maxTextWidth;
+
+          // 计算总尺寸
+          const totalWidth = isVertical
+            ? itemWidth
+            : ranges.value.length * (itemWidth + itemGap) - itemGap;
+          const totalHeight = isVertical
+            ? ranges.value.length * (itemHeight + itemGap) - itemGap
+            : itemHeight;
+
+          // 计算位置和偏移
+          let left: string | number | undefined = undefined;
+          let right: string | number | undefined = undefined;
+          let top: string | number | undefined = undefined;
+          let bottom: string | number | undefined = undefined;
+          let offsetX = 0;
+          let offsetY = 0;
+
+          if (props.legendPosition === "left") {
+            left = padding;
+            top = "50%";
+            offsetY = -totalHeight / 2;
+          } else if (props.legendPosition === "right") {
+            right = padding;
+            top = "50%";
+            offsetX = 0; // 从右边开始，不需要负偏移
+            offsetY = -totalHeight / 2;
+          } else if (props.legendPosition === "top") {
+            left = "50%";
+            top = padding;
+            offsetX = -totalWidth / 2;
+          } else {
+            // bottom
+            left = "50%";
+            bottom = padding;
+            offsetX = -totalWidth / 2;
+            offsetY = 0; // 从底部开始，不需要负偏移
+          }
+
+          const children: any[] = [];
+          ranges.value.forEach((range: ChartMapCqRange, index: number) => {
+            const y = isVertical ? index * (itemHeight + itemGap) + offsetY : offsetY;
+            const x = isVertical ? offsetX : index * (itemWidth + itemGap) + offsetX;
+
+            // 颜色块
+            children.push({
+              type: "rect",
+              left: x,
+              top: y,
+              shape: {
+                width: iconSize,
+                height: iconSize,
+                r: 2,
+              },
+              style: {
+                fill: range.color,
+                stroke: "#fff",
+                lineWidth: 1,
+              },
+            });
+
+            // 文字标签
+            children.push({
+              type: "text",
+              left: x + iconSize + textGap,
+              top: y + iconSize / 2,
+              style: {
+                text: range.label,
+                fill: "#333",
+                fontSize: fontSize,
+                textAlign: "left",
+                textVerticalAlign: "middle",
+              },
+            });
+          });
+
+          // 构建返回对象，只包含已定义的属性
+          const groupConfig: any = {
+            type: "group",
+            children,
+          };
+          
+          if (left !== undefined) {
+            groupConfig.left = typeof left === "string" ? left : `${left}px`;
+          }
+          if (right !== undefined) {
+            groupConfig.right = typeof right === "string" ? right : `${right}px`;
+          }
+          if (top !== undefined) {
+            groupConfig.top = typeof top === "string" ? top : `${top}px`;
+          }
+          if (bottom !== undefined) {
+            groupConfig.bottom = typeof bottom === "string" ? bottom : `${bottom}px`;
+          }
+
+          return groupConfig;
+        })()
+      : null;
+
+  // 合并所有 graphic 元素
+  const graphic = [...specialLabelsGraphic, ...(legendGraphic ? [legendGraphic] : [])];
 
   const option: echarts.EChartsOption = {
     backgroundColor: props.backgroundColor,
     tooltip: props.showTooltip
       ? {
           trigger: "item",
-          formatter: props.tooltipFormatter || ((params: any) => {
-            const name = processAreaName(params.name || "");
-            return `${name}<br/>${params.value || ""}`;
-          }),
+          formatter:
+            props.tooltipFormatter ||
+            ((params: any) => {
+              const name = processAreaName(params.name || "");
+              return `${name}<br/>${params.value || ""}`;
+            }),
         }
       : {
           show: false,
@@ -461,16 +644,17 @@ const buildOption = (): echarts.EChartsOption => {
         label: {
           show: props.showLabel,
           // 如果显示主城区地图，通过 formatter 隐藏主城区的标签
-          formatter: props.showLabel && props.showMainCityInCorner
-            ? (params: any) => {
-                const areaName = params.name || "";
-                // 如果是主城区，返回空字符串隐藏标签
-                if (props.mainCityNames?.includes(areaName)) {
-                  return "";
+          formatter:
+            props.showLabel && props.showMainCityInCorner
+              ? (params: any) => {
+                  const areaName = params.name || "";
+                  // 如果是主城区，返回空字符串隐藏标签
+                  if (props.mainCityNames?.includes(areaName)) {
+                    return "";
+                  }
+                  return areaName;
                 }
-                return areaName;
-              }
-            : undefined,
+              : undefined,
           color: props.labelStyle?.color || "#ffffff",
           fontSize: props.labelStyle?.fontSize || 12,
           fontWeight: (props.labelStyle?.fontWeight as any) || "normal",
@@ -530,16 +714,17 @@ const buildOption = (): echarts.EChartsOption => {
           // 对于没有数据的区域，geo 层的 label 会显示
           show: props.showLabel,
           // 如果显示主城区地图，通过 formatter 隐藏主城区的标签
-          formatter: props.showLabel && props.showMainCityInCorner
-            ? (params: any) => {
-                const areaName = params.name || "";
-                // 如果是主城区，返回空字符串隐藏标签
-                if (props.mainCityNames?.includes(areaName)) {
-                  return "";
+          formatter:
+            props.showLabel && props.showMainCityInCorner
+              ? (params: any) => {
+                  const areaName = params.name || "";
+                  // 如果是主城区，返回空字符串隐藏标签
+                  if (props.mainCityNames?.includes(areaName)) {
+                    return "";
+                  }
+                  return areaName;
                 }
-                return areaName;
-              }
-            : undefined,
+              : undefined,
           color: props.labelStyle?.color || "#ffffff",
           fontSize: props.labelStyle?.fontSize || 12,
           fontWeight: (props.labelStyle?.fontWeight as any) || "normal",
@@ -552,10 +737,12 @@ const buildOption = (): echarts.EChartsOption => {
               type: "map" as const,
               map: props.mapName,
               geoIndex: 1,
-              data: seriesData.filter((item: any) => item.name.endsWith("_main")).map((item: any) => ({
-                ...item,
-                name: item.name.replace("_main", ""),
-              })),
+              data: seriesData
+                .filter((item: any) => item.name.endsWith("_main"))
+                .map((item: any) => ({
+                  ...item,
+                  name: item.name.replace("_main", ""),
+                })),
               itemStyle: {
                 areaColor: props.areaStyle?.areaColor || "#5b9bd5",
                 borderColor: props.areaStyle?.borderColor || "#fff",
@@ -702,4 +889,3 @@ onBeforeUnmount(() => {
   height: 100%;
 }
 </style>
-

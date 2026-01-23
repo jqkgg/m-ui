@@ -343,14 +343,20 @@ const buildOption = (): echarts.EChartsOption => {
 
   // 转换数据格式，应用颜色
   const seriesData = processedData.map((item: ChartMapCqDataItem) => {
-    // 如果有自定义颜色或数据值，使用计算的颜色；否则使用默认颜色
-    const color =
-      item.color || (item.value !== undefined ? getColorByValue(item.value) : "#5b9bd5");
+    // 如果有自定义颜色，直接使用；否则根据数据值计算颜色
+    let color = "#5b9bd5"; // 默认颜色（用于没有数据的区域）
+    if (item.color) {
+      color = item.color;
+    } else if (item.value !== undefined && item.value !== null && typeof item.value === "number") {
+      color = getColorByValue(item.value);
+    }
+    
+    // 确保返回的数据格式符合 ECharts map 系列的要求
     return {
       name: item.name,
       value: item.value,
       itemStyle: {
-        areaColor: color,
+        areaColor: color, // 始终设置 areaColor，确保颜色能正确应用
         borderColor: props.areaStyle?.borderColor || "#fff",
         borderWidth: props.areaStyle?.borderWidth || 1,
       },
@@ -635,7 +641,7 @@ const buildOption = (): echarts.EChartsOption => {
         layoutCenter: props.showMainCityInCorner ? ["50%", "50%"] : undefined,
         layoutSize: props.showMainCityInCorner ? "80%" : "100%",
         itemStyle: {
-          areaColor: props.areaStyle?.areaColor || "#5b9bd5",
+          // 不设置 areaColor，让 series 层 data 中的 itemStyle.areaColor 生效
           borderColor: props.areaStyle?.borderColor || "#fff",
           borderWidth: props.areaStyle?.borderWidth || 1,
         },
@@ -675,7 +681,7 @@ const buildOption = (): echarts.EChartsOption => {
               layoutCenter: ["15%", "15%"],
               layoutSize: "30%",
               itemStyle: {
-                areaColor: props.areaStyle?.areaColor || "#5b9bd5",
+                // 不设置 areaColor，让 series 层 data 中的 itemStyle.areaColor 生效
                 borderColor: props.areaStyle?.borderColor || "#fff",
                 borderWidth: props.areaStyle?.borderWidth || 1,
               },
@@ -700,10 +706,14 @@ const buildOption = (): echarts.EChartsOption => {
       {
         type: "map" as const,
         map: props.mapName,
-        geoIndex: 0,
+        // 不使用 geoIndex，直接使用 map，这样 data 中的 itemStyle 才能生效
+        roam: false,
+        zoom: 1,
+        layoutCenter: props.showMainCityInCorner ? ["50%", "50%"] : undefined,
+        layoutSize: props.showMainCityInCorner ? "80%" : "100%",
         data: seriesData.filter((item: any) => !item.name.endsWith("_main")),
+        // 只设置边框样式，areaColor 由 data 中的 itemStyle 控制
         itemStyle: {
-          areaColor: props.areaStyle?.areaColor || "#5b9bd5",
           borderColor: props.areaStyle?.borderColor || "#fff",
           borderWidth: props.areaStyle?.borderWidth || 1,
         },
@@ -740,8 +750,12 @@ const buildOption = (): echarts.EChartsOption => {
         ? [
             {
               type: "map" as const,
-              map: props.mapName,
-              geoIndex: 1,
+              map: `${props.mapName}-main`,
+              // 不使用 geoIndex，直接使用 map，这样 data 中的 itemStyle 才能生效
+              roam: false,
+              zoom: 1,
+              layoutCenter: ["15%", "15%"],
+              layoutSize: "30%",
               data: seriesData
                 .filter((item: any) => item.name.endsWith("_main"))
                 .map((item: any) => ({
@@ -749,7 +763,7 @@ const buildOption = (): echarts.EChartsOption => {
                   name: item.name.replace("_main", ""),
                 })),
               itemStyle: {
-                areaColor: props.areaStyle?.areaColor || "#5b9bd5",
+                // 不设置 areaColor，让 data 中每个数据项的 itemStyle.areaColor 生效
                 borderColor: props.areaStyle?.borderColor || "#fff",
                 borderWidth: props.areaStyle?.borderWidth || 1,
               },

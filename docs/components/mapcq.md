@@ -57,8 +57,8 @@ const specialLabels = ref([
 ])
 
 // 导入本地GeoJSON文件
-// import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
-// import chongqingMainGeoJson from '../../src/assets/geo/chongqing-main.json'
+import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
+import chongqingMainGeoJson from '../../src/assets/geo/chongqing-main.json'
 
 // 注意：组件会自动加载默认GeoJSON数据（从本地文件或阿里云API）
 // 如果需要使用自定义GeoJSON，可以通过geoJson属性传入
@@ -373,7 +373,7 @@ import { MChartMapCq } from '@jqkgg/m-ui'
 
 <script setup>
 import { MChartMapCq } from '@jqkgg/m-ui'
-// import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
+import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
 
 // 通过geoJson属性提供本地地图数据
 // 组件会自动注册地图

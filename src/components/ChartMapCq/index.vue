@@ -355,7 +355,9 @@ const buildOption = (): echarts.EChartsOption => {
         },
       },
       label: {
-        show: props.showLabel && !item.name.endsWith("_main"), // 主城区副本不显示标签
+        // 主城区副本不显示标签；如果显示主城区地图，主城区的标签也不显示
+        show: props.showLabel && !item.name.endsWith("_main") && 
+              !(props.showMainCityInCorner && props.mainCityNames?.includes(item.name)),
         color: props.labelStyle?.color || "#ffffff",
         fontSize: props.labelStyle?.fontSize || 12,
         fontWeight: props.labelStyle?.fontWeight || "normal",
@@ -458,6 +460,17 @@ const buildOption = (): echarts.EChartsOption => {
         },
         label: {
           show: props.showLabel,
+          // 如果显示主城区地图，通过 formatter 隐藏主城区的标签
+          formatter: props.showLabel && props.showMainCityInCorner
+            ? (params: any) => {
+                const areaName = params.name || "";
+                // 如果是主城区，返回空字符串隐藏标签
+                if (props.mainCityNames?.includes(areaName)) {
+                  return "";
+                }
+                return areaName;
+              }
+            : undefined,
           color: props.labelStyle?.color || "#ffffff",
           fontSize: props.labelStyle?.fontSize || 12,
           fontWeight: (props.labelStyle?.fontWeight as any) || "normal",
@@ -513,7 +526,20 @@ const buildOption = (): echarts.EChartsOption => {
           },
         },
         label: {
+          // series 层的 label 会覆盖 geo 层的 label，但只对有数据的区域生效
+          // 对于没有数据的区域，geo 层的 label 会显示
           show: props.showLabel,
+          // 如果显示主城区地图，通过 formatter 隐藏主城区的标签
+          formatter: props.showLabel && props.showMainCityInCorner
+            ? (params: any) => {
+                const areaName = params.name || "";
+                // 如果是主城区，返回空字符串隐藏标签
+                if (props.mainCityNames?.includes(areaName)) {
+                  return "";
+                }
+                return areaName;
+              }
+            : undefined,
           color: props.labelStyle?.color || "#ffffff",
           fontSize: props.labelStyle?.fontSize || 12,
           fontWeight: (props.labelStyle?.fontWeight as any) || "normal",

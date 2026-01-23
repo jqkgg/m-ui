@@ -51,7 +51,7 @@ const props = withDefaults(defineProps<ChartMapCqProps>(), {
   showLabel: true,
   labelStyle: () => ({
     color: "#ffffff",
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: "normal",
   }),
   showLegend: true,
@@ -73,6 +73,7 @@ const props = withDefaults(defineProps<ChartMapCqProps>(), {
   showTooltip: true,
   tooltipFormatter: undefined,
   specialLabels: () => [],
+  roam: false,
 });
 
 const chartContainer = ref<HTMLDivElement | null>(null);
@@ -373,12 +374,7 @@ const buildOption = (): echarts.EChartsOption => {
         },
       },
       label: {
-        // 主城区副本不显示标签；如果显示主城区地图，主城区的标签也不显示
-        show:
-          props.showLabel &&
-          !item.name.endsWith("_main") &&
-          !(props.showMainCityInCorner && props.mainCityNames?.includes(item.name)),
-        color: props.labelStyle?.color || "#ffffff",
+        show: props.showLabel,
         fontSize: props.labelStyle?.fontSize || 12,
         fontWeight: props.labelStyle?.fontWeight || "normal",
       },
@@ -645,7 +641,7 @@ const buildOption = (): echarts.EChartsOption => {
         type: "map" as const,
         map: props.mapName,
         // 不使用 geoIndex，直接使用 map，这样 data 中的 itemStyle 才能生效
-        roam: false,
+        roam: props.roam,
         zoom: 1,
         // 使用 layoutCenter 和 layoutSize 控制地图布局（与 width/height 冲突，不能同时使用）
         layoutCenter: props.showMainCityInCorner ? ["50%", "50%"] : undefined,
@@ -691,10 +687,10 @@ const buildOption = (): echarts.EChartsOption => {
               type: "map" as const,
               map: `${props.mapName}-main`,
               // 不使用 geoIndex，直接使用 map，这样 data 中的 itemStyle 才能生效
-              roam: false,
+              roam: props.roam,
               zoom: 1,
-              layoutCenter: ["15%", "15%"],
-              layoutSize: "30%",
+              layoutCenter: ["15%", "25%"],
+              layoutSize: "40%",
               data: seriesData
                 .filter((item: any) => item.name.endsWith("_main"))
                 .map((item: any) => ({
@@ -820,6 +816,7 @@ watch(
     props.areaStyle,
     props.emphasis,
     props.specialLabels,
+    props.roam,
   ],
   async () => {
     // 如果geoJson或showMainCityInCorner变化，需要重新注册地图

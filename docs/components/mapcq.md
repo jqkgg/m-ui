@@ -245,6 +245,91 @@ import { MChartMapCq } from '@jqkgg/m-ui'
 ```
 </CodeBlock>
 
+## 鼠标缩放和拖拽
+
+通过 `roam` 属性可以控制地图是否支持鼠标缩放和拖拽。
+
+### 启用缩放和拖拽
+
+设置`roam=true`, 启用缩放和拖拽
+
+<Demo>
+  <div style="width: 100%; height: 450px;">
+    <MChartMapCq
+      :data="data1"
+      :roam="true"
+      :height="450"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartMapCq
+    :data="data"
+    :roam="true"
+    :height="450"
+  />
+</template>
+```
+</CodeBlock>
+
+### 只允许缩放
+
+设置`roam=scale`, 仅缩放
+
+<Demo>
+  <div style="width: 100%; height: 450px;">
+    <MChartMapCq
+      :data="data1"
+      roam="scale"
+      :height="450"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartMapCq
+    :data="data"
+    roam="scale"
+    :height="450"
+  />
+</template>
+```
+</CodeBlock>
+
+### 只允许拖拽
+
+设置`roam=move`, 仅拖拽
+
+<Demo>
+  <div style="width: 100%; height: 450px;">
+    <MChartMapCq
+      :data="data1"
+      roam="move"
+      :height="450"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartMapCq
+    :data="data"
+    roam="move"
+    :height="450"
+  />
+</template>
+```
+</CodeBlock>
+
 ## 特殊标注
 
 通过 `special-labels` 属性可以添加特殊标注区域。
@@ -395,28 +480,29 @@ import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | --- | --- | --- | --- | --- |
-| data | 地图数据数组 | ChartMapCqDataItem[] | — | `[]` |
+| data | 地图数据数组 | [ChartMapCqDataItem[]](#ChartMapCqDataItem) | — | `[]` |
 | geoJson | 地图GeoJSON数据 | any | — | `undefined` |
 | mapName | 地图名称（用于注册echarts地图） | string | — | `'chongqing'` |
 | showMainCityInCorner | 是否显示主城区在左上角 | boolean | — | `true` |
 | mainCityNames | 主城区区域名称数组 | string[] | — | `['渝中区', '大渡口区', ...]` |
-| ranges | 颜色范围配置 | ChartMapCqRange[] | — | `undefined` |
+| ranges | 颜色范围配置 | [ChartMapCqRange[]](#ChartMapCqRange) | — | `undefined` |
 | defaultRanges | 是否使用默认颜色范围（序时进度） | boolean | — | `true` |
 | showLabel | 是否显示标签 | boolean | — | `true` |
-| labelStyle | 标签样式 | object | — | `{ color: '#ffffff', fontSize: 12, fontWeight: 'normal' }` |
+| labelStyle | 标签样式 | [LabelStyle](#LabelStyle) | — | `{ color: '#ffffff', fontSize: 12, fontWeight: 'normal' }` |
 | showLegend | 是否显示图例 | boolean | — | `true` |
 | legendPosition | 图例位置 | string | left / right / top / bottom | `'right'` |
 | legendTitle | 图例标题 | string | — | `'序时进度'` |
 | height | 图表高度 | number \| string | — | `600` |
 | width | 图表宽度 | number \| string | — | `'100%'` |
 | backgroundColor | 背景颜色 | string | — | `'transparent'` |
-| areaStyle | 地图区域样式 | object | — | `{ borderColor: '#fff', borderWidth: 1 }` |
-| emphasis | 高亮样式 | object | — | `{ borderColor: '#333', borderWidth: 2 }` |
+| areaStyle | 地图区域样式 | [AreaStyle](#AreaStyle) | — | `{ borderColor: '#fff', borderWidth: 1 }` |
+| emphasis | 高亮样式 | [Emphasis](#Emphasis) | — | `{ borderColor: '#333', borderWidth: 2 }` |
 | showTooltip | 是否显示提示框 | boolean | — | `true` |
 | tooltipFormatter | 提示框格式化函数 | (params: any) => string | — | `undefined` |
-| specialLabels | 特殊标注区域配置 | array | — | `[]` |
+| specialLabels | 特殊标注区域配置 | [SpecialLabel[]](#SpecialLabel) | — | `[]` |
+| roam | 是否开启鼠标缩放和平移漫游 | boolean \| 'scale' \| 'move' | true / false / 'scale' / 'move' | `false` |
 
-### ChartMapCqDataItem
+### ChartMapCqDataItem {#ChartMapCqDataItem}
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | --- | --- | --- | --- | --- |
@@ -424,7 +510,7 @@ import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
 | value | 数据值（用于颜色映射） | number | — | — |
 | color | 自定义颜色（可选，会覆盖根据value计算的颜色） | string | — | — |
 
-### ChartMapCqRange
+### ChartMapCqRange {#ChartMapCqRange}
 
 | 参数 | 说明 | 类型 | 可选值 | 默认值 |
 | --- | --- | --- | --- | --- |
@@ -432,6 +518,39 @@ import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
 | max | 最大值（不包含，如果是最后一个范围则包含） | number | — | — |
 | color | 该范围对应的颜色 | string | — | — |
 | label | 范围标签 | string | — | — |
+
+### LabelStyle {#LabelStyle}
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| color | 标签颜色 | string | — | `'#ffffff'` |
+| fontSize | 标签字体大小 | number | — | `12` |
+| fontWeight | 标签字体粗细 | string \| number | — | `'normal'` |
+
+### AreaStyle {#AreaStyle}
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| areaColor | 区域填充颜色 | string | — | `'#5b9bd5'` |
+| borderColor | 区域边框颜色 | string | — | `'#fff'` |
+| borderWidth | 区域边框宽度 | number | — | `1` |
+
+### Emphasis {#Emphasis}
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| areaColor | 高亮时区域填充颜色 | string | — | `'#ffff00'` |
+| borderColor | 高亮时区域边框颜色 | string | — | `'#fff'` |
+| borderWidth | 高亮时区域边框宽度 | number | — | `2` |
+
+### SpecialLabel {#SpecialLabel}
+
+| 参数 | 说明 | 类型 | 可选值 | 默认值 |
+| --- | --- | --- | --- | --- |
+| name | 标注名称 | string | — | — |
+| position | 标注位置坐标 | [number, number] | — | — |
+| icon | 标注图标（可选） | string | — | — |
+| label | 标注标签文本（可选） | string | — | — |
 
 ## 注意事项
 

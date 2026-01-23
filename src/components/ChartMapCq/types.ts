@@ -76,5 +76,7 @@ export interface ChartMapCqProps {
     icon?: string
     label?: string
   }>
+  /** 是否开启鼠标缩放和平移漫游。支持设置为 true / false / 'scale' / 'move'。默认为 false（关闭状态） */
+  roam?: boolean | 'scale' | 'move'
 }
 

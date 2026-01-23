@@ -547,12 +547,17 @@ const buildOption = (): echarts.EChartsOption => {
           ranges.value.forEach((range: ChartMapCqRange, index: number) => {
             const y = isVertical ? index * (itemHeight + itemGap) + offsetY : offsetY;
             const x = isVertical ? offsetX : index * (itemWidth + itemGap) + offsetX;
+            
+            // 计算行的中心点，用于垂直居中对齐
+            const centerY = y + itemHeight / 2;
+            // 颜色块在行中垂直居中
+            const rectTop = centerY - iconSize / 2;
 
             // 颜色块
             children.push({
               type: "rect",
               left: x,
-              top: y,
+              top: rectTop,
               shape: {
                 width: iconSize,
                 height: iconSize,
@@ -565,11 +570,11 @@ const buildOption = (): echarts.EChartsOption => {
               },
             });
 
-            // 文字标签
+            // 文字标签 - 使用 centerY 作为文字的垂直中心点
             children.push({
               type: "text",
               left: x + iconSize + textGap,
-              top: y + iconSize / 2,
+              top: centerY - 5,
               style: {
                 text: range.label,
                 fill: "#333",

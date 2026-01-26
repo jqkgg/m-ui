@@ -1,6 +1,6 @@
 {
   "name": "@jqkgg/m-ui",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "一个基于 Vue3 的组件库",
   "type": "module",
   "main": "./dist/m-ui.umd.cjs",

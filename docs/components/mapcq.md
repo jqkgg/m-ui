@@ -72,7 +72,7 @@ import chongqingMainGeoJson from '../../src/assets/geo/chongqing-main.json'
   <div style="width: 100%; height: 450px;">
     <MChartMapCq
       :data="data1"
-      :show-main-city-in-corner="showMainCity"
+      :show-main-city-in-corner="false"
       :height="450"
       legend-position="right"
     />

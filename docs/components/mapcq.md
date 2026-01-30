@@ -392,9 +392,9 @@ import { MChartMapCq } from '@jqkgg/m-ui'
 
 由于阿里云DataV API的区县数据通常不包含镇街级别的详细划分，组件提供了两种方式来使用自定义的区县GeoJSON数据（包含镇街边界）：
 
-### 方式1：使用 districtGeoJsonMap 属性
+### 方式1：使用 districtGeoJsonMap 属性 (推荐)
 
-通过 `district-geo-json-map` 属性传入一个对象，key为区县名称，value为包含镇街边界的GeoJSON数据。
+通过 `district-geo-json-map` 属性传入一个包含镇街边界的GeoJSON数据。
 
 <CodeBlock>
 
@@ -403,7 +403,7 @@ import { MChartMapCq } from '@jqkgg/m-ui'
   <MChartMapCq
     :data="data"
     :enable-drill-down="true"
-    :district-geo-json-map="districtGeoJsonMap"
+    :district-geo-json-map="chongqingDistrictGeoJson"
     :height="450"
   />
 </template>
@@ -411,21 +411,12 @@ import { MChartMapCq } from '@jqkgg/m-ui'
 <script setup>
 import { MChartMapCq } from '@jqkgg/m-ui'
 // 导入包含镇街边界的区县GeoJSON文件
-import wanzhouGeoJson from './assets/geo/wanzhou.json'
-import yubeiGeoJson from './assets/geo/yubei.json'
-
-// 创建区县GeoJSON数据映射
-const districtGeoJsonMap = {
-  '万州区': wanzhouGeoJson,
-  '渝北区': yubeiGeoJson,
-  // 可以添加更多区县的数据
-  // '江北区': jiangbeiGeoJson,
-  // ...
-}
+// 可从组件库源码 https://github.com/jqkgg/m-ui/tree/main/src/assets/geo 下载并放至项目src/assets/geo目录下
+import chongqingDistrictGeoJson from '/src/assets/geo/chongqing-district.json'
 
 const data = [
   { name: '万州区', value: 40 },
-  { name: '渝北区', value: 60 },
+  { name: '两江新区', value: 60 },
   // ...
 ]
 </script>
@@ -433,10 +424,9 @@ const data = [
 </CodeBlock>
 
 **说明**：
-- `districtGeoJsonMap` 是一个对象，键为区县名称（必须与 `data` 中的 `name` 字段完全匹配）
-- 值为GeoJSON数据对象，应包含该区县下辖的镇街边界信息
-- 如果某个区县在 `districtGeoJsonMap` 中有数据，将优先使用该数据，不会从API加载
-- 如果某个区县不在 `districtGeoJsonMap` 中，将使用默认的API加载方式
+- `chongqingDistrictGeoJson` 值为GeoJSON数据对象，应包含该区县下辖的镇街边界信息
+- 如果某个区县在 `chongqingDistrictGeoJson` 中有数据，将优先使用该数据，不会从API加载
+- 如果某个区县不在 `chongqingDistrictGeoJson` 中，将使用默认的API加载方式
 
 ### 方式2：使用 loadDistrictGeoJsonFn 自定义加载函数
 
@@ -507,7 +497,25 @@ const data = [
 
 ### 获取包含镇街边界的GeoJSON数据
 
-要获取包含镇街边界的区县GeoJSON数据，可以通过以下方式：
+#### 使用组件库提供的完整数据（推荐）
+
+组件库源码中已包含完整的重庆区县及街道级别的GeoJSON数据，位于 `src/assets/geo` 目录下。这些数据已合并渝北区和江北区为两江新区，可直接下载使用。
+
+📦 **数据下载地址**：[https://github.com/jqkgg/m-ui/tree/main/src/assets/geo](https://github.com/jqkgg/m-ui/tree/main/src/assets/geo)
+
+**使用方式**：
+1. 从 GitHub 仓库下载 `src/assets/geo` 目录下的 JSON 文件
+2. 将文件放置到你的项目 `assets/geo` 目录中
+3. 按照上述"方式1"或"方式2"的示例代码导入并使用
+
+**数据说明**：
+- 包含重庆市所有区县的完整GeoJSON数据
+- 每个区县数据都包含详细的镇街边界信息
+- 已合并渝北区和江北区为两江新区，符合实际行政区划
+
+#### 其他数据获取方式
+
+如果需要使用其他数据源，也可以通过以下方式获取：
 
 1. **从GitHub等开源项目获取**：
    - 搜索 "中国区县GeoJSON"、"重庆区县地图数据" 等关键词
@@ -521,48 +529,6 @@ const data = [
 3. **自行制作**：
    - 使用 QGIS、ArcGIS 等工具从官方数据源制作
    - 从国家基础地理信息中心等官方机构获取数据
-
-### 完整示例
-
-<CodeBlock>
-
-```vue
-<template>
-  <MChartMapCq
-    :data="mapData"
-    :enable-drill-down="true"
-    :district-geo-json-map="districtGeoJsonMap"
-    :height="600"
-    :area-style="{
-      borderColor: '#666',
-      borderWidth: 0.5
-    }"
-  />
-</template>
-
-<script setup>
-import { ref } from 'vue'
-import { MChartMapCq } from '@jqkgg/m-ui'
-
-// 导入包含镇街边界的GeoJSON文件
-import wanzhouGeoJson from './assets/geo/wanzhou-with-streets.json'
-
-// 地图数据
-const mapData = ref([
-  { name: '万州区', value: 45 },
-  { name: '渝北区', value: 60 },
-  { name: '江北区', value: 55 },
-  // ...
-])
-
-// 区县GeoJSON数据映射（包含镇街边界）
-const districtGeoJsonMap = {
-  '万州区': wanzhouGeoJson,
-  // 可以逐步添加其他区县的数据
-}
-</script>
-```
-</CodeBlock>
 
 ## 特殊标注
 
@@ -653,10 +619,12 @@ const districtGeoJsonMap = {
 
 ### 主地图数据
 1. 优先从本地文件 `src/assets/geo/chongqing.json` 加载（如果存在）
+📦 **数据下载地址**：[https://github.com/jqkgg/m-ui/tree/main/src/assets/geo](https://github.com/jqkgg/m-ui/tree/main/src/assets/geo)
 2. 如果本地文件不存在，从阿里云DataV API加载：`https://geo.datav.aliyun.com/areas_v3/bound/500000_full.json`
 
 ### 主城区地图数据（当 `show-main-city-in-corner` 为 true 时）
 1. 优先从本地文件 `src/assets/geo/chongqing-main.json` 加载（如果存在）
+📦 **数据下载地址**：[https://github.com/jqkgg/m-ui/tree/main/src/assets/geo](https://github.com/jqkgg/m-ui/tree/main/src/assets/geo)
 2. 如果本地文件不存在，从完整地图中筛选出主城区数据
 3. 如果筛选失败，从阿里云API加载完整地图后筛选
 
@@ -670,7 +638,7 @@ const districtGeoJsonMap = {
 
 **主城区包括九区**：渝北区、江北区、北碚区、沙坪坝区、渝中区、南岸区、九龙坡区、大渡口区、巴南区
 
-**注意**：两江新区在阿里云地图数据中可能不存在，因此使用渝北区和江北区替代。
+**注意**：两江新区在阿里云地图数据中可能不存在，因此使用渝北区和江北区替代。组件库源码中的GeoJSON数据已经合并渝北区和江北区
 
 ## 使用本地GeoJSON文件
 
@@ -712,9 +680,10 @@ import chongqingGeoJson from '../../src/assets/geo/chongqing.json'
 ## 本地GeoJSON文件
 
 如果需要使用本地GeoJSON文件，可以：
-1. 从 [阿里云DataV](https://datav.aliyun.com/portal/school/atlas/area_selector) 下载重庆地图数据
-2. 将文件保存为 `src/assets/geo/chongqing.json`
-3. 组件会自动优先加载本地文件
+1. 从[组件库源码github](https://github.com/jqkgg/m-ui/tree/main/src/assets/geo) 下载重庆地图数据(推荐)
+2. 从 [阿里云DataV](https://datav.aliyun.com/portal/school/atlas/area_selector) 下载重庆地图数据
+3. 将文件保存为 `src/assets/geo/chongqing.json`
+4. 组件会自动优先加载本地文件
 
 ## API
 

@@ -192,7 +192,7 @@
                 :area-style="{ areaColor: '#5b9bd5', borderColor: '#fff', borderWidth: 1 }"
                 :emphasis="{ areaColor: '#ffff00', borderColor: '#fff', borderWidth: 2 }"
                 :enable-drill-down="true"
-                :district-geo-json-map="districtGeoJsonMap"
+                :district-geo-json-map="chongqingDistrictGeoJson"
               />
             </div>
           </div>
@@ -352,7 +352,7 @@ import ChartMapCq from '../components/ChartMapCq/index.vue'
 // @ts-ignore
 import ScrollBox from '../components/ScrollBox/index.vue'
 // @ts-ignore
-import chongqingDistrictGeoJson from '../assets/geo/chongqing-district.json'
+import chongqingDistrictGeoJson from '/src/assets/geo/chongqing-district.json'
 
 // 地图数据
 const mapData = ref([
@@ -399,8 +399,6 @@ const mapData = ref([
   { name: '高新区', value: 65 },
 ])
 
-// 区县GeoJSON数据映射（包含镇街边界）
-const districtGeoJsonMap = chongqingDistrictGeoJson as Record<string, any>
 
 // 区县评价数据
 const districtData = ref([

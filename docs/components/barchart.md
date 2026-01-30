@@ -56,6 +56,20 @@ const scrollCategories = ref([
   '类别1', '类别2', '类别3', '类别4', '类别5', '类别6', '类别7', '类别8',
   '类别9', '类别10', '类别11', '类别12', '类别13', '类别14', '类别15'
 ])
+
+// 堆叠示例数据
+const stackSeries = ref([
+  { name: '系列1', data: [100, 200, 300, 400, 500], stack: 'total' },
+  { name: '系列2', data: [150, 250, 350, 450, 550], stack: 'total' },
+  { name: '系列3', data: [80, 180, 280, 380, 480], stack: 'total' }
+])
+
+const stackSeries2 = ref([
+  { name: '产品A', data: [120, 132, 101, 134, 90], stack: 'product' },
+  { name: '产品B', data: [220, 182, 191, 234, 290], stack: 'product' },
+  { name: '服务A', data: [150, 232, 201, 154, 190], stack: 'service' },
+  { name: '服务B', data: [320, 332, 301, 334, 390], stack: 'service' }
+])
 </script>
 
 ## 基础用法
@@ -300,6 +314,85 @@ import { MChartBar } from '@jqkgg/m-ui'
 ```
 </CodeBlock>
 
+## 堆叠柱状图
+
+通过 `stack` 属性可以将多个系列堆叠在一起显示。具有相同 `stack` 值的系列会堆叠在同一个柱子上。
+
+### 基础堆叠
+
+所有系列使用相同的 `stack` 值，实现完全堆叠。
+
+<Demo>
+  <div style="width: 100%;">
+    <MChartBar
+      :series="stackSeries"
+      :categories="categories1"
+      direction="vertical"
+      :height="300"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartBar
+    :series="[
+      { name: '系列1', data: [100, 200, 300, 400, 500], stack: 'total' },
+      { name: '系列2', data: [150, 250, 350, 450, 550], stack: 'total' },
+      { name: '系列3', data: [80, 180, 280, 380, 480], stack: 'total' }
+    ]"
+    :categories="['类别1', '类别2', '类别3', '类别4', '类别5']"
+    direction="vertical"
+    :height="300"
+  />
+</template>
+
+<script setup>
+import { MChartBar } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+### 分组堆叠
+
+不同的 `stack` 值可以创建多个堆叠组，实现分组堆叠效果。
+
+<Demo>
+  <div style="width: 100%;">
+    <MChartBar
+      :series="stackSeries2"
+      :categories="categories1"
+      direction="vertical"
+      :height="300"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartBar
+    :series="[
+      { name: '产品A', data: [120, 132, 101, 134, 90], stack: 'product' },
+      { name: '产品B', data: [220, 182, 191, 234, 290], stack: 'product' },
+      { name: '服务A', data: [150, 232, 201, 154, 190], stack: 'service' },
+      { name: '服务B', data: [320, 332, 301, 334, 390], stack: 'service' }
+    ]"
+    :categories="['类别1', '类别2', '类别3', '类别4', '类别5']"
+    direction="vertical"
+    :height="300"
+  />
+</template>
+
+<script setup>
+import { MChartBar } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
 ## 滚动展示
 
 当数据量较大时，组件支持自动滚动展示。鼠标悬浮时暂停滚动，移开后恢复滚动。
@@ -470,4 +563,5 @@ import { MChartBar } from '@jqkgg/m-ui'
 | name | 系列名称 | string | — | — |
 | data | 系列数据数组 | number[] | — | — |
 | color | 系列颜色（可选，会覆盖 colors 中的对应颜色） | string | — | — |
+| stack | 堆叠标识，相同 stack 值的系列会堆叠在一起 | string | — | — |
 

@@ -43,6 +43,25 @@ const innerRadius = ref('60%')
 const showLabel = ref(true)
 const showPercent = ref(true)
 const showValue = ref(false)
+
+// 玫瑰图示例数据
+const roseData = ref([
+  { name: '数据1', value: 100 },
+  { name: '数据2', value: 200 },
+  { name: '数据3', value: 300 },
+  { name: '数据4', value: 150 },
+  { name: '数据5', value: 250 },
+  { name: '数据6', value: 180 }
+])
+
+const roseType = ref(false)
+
+// 进度环示例数据
+const progressData = ref([
+  { name: '进度', value: 30 }
+])
+const progressMax = ref(100)
+const progressColor = ref(['#87CEEB', '#4169E1'])
 </script>
 
 ## 基础用法
@@ -417,6 +436,387 @@ const innerRadius = ref('60%')
 ```
 </CodeBlock>
 
+## 进度环
+
+通过 `progress-mode` 属性可以启用进度环模式，显示单值进度，中心显示百分比。适合展示完成度、进度等场景。
+
+### 基础进度环
+
+使用 `progress-mode` 启用进度环模式，数据只需传入一个值，组件会自动计算百分比并显示在中心。通过 `progress-label` 可以自定义中心显示的文案，默认为"完成率"。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="progressData"
+      progress-mode
+      :progress-max="progressMax"
+      :progress-color="progressColor"
+      inner-radius="75%"
+      radius="90%"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[{ name: '进度', value: 30 }]"
+    progress-mode
+    :progress-max="100"
+    :progress-color="['#87CEEB', '#4169E1']"
+    progress-label="完成率"
+    inner-radius="75%"
+    radius="90%"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+### 自定义进度环文案
+
+通过 `progress-label` 属性可以自定义进度环中心显示的文案，文案会显示在百分比上方。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="[{ name: '进度', value: 75 }]"
+      progress-mode
+      :progress-max="100"
+      progress-label="达成率"
+      :progress-color="['#87CEEB', '#4169E1']"
+      inner-radius="75%"
+      radius="90%"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[{ name: '进度', value: 75 }]"
+    progress-mode
+    :progress-max="100"
+    progress-label="达成率"
+    :progress-color="['#87CEEB', '#4169E1']"
+    inner-radius="75%"
+    radius="90%"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+### 自定义进度环颜色
+
+通过 `progress-color` 可以自定义进度条的渐变色，通过 `progress-bg-color` 可以自定义未完成部分的颜色。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="[{ name: '进度', value: 65 }]"
+      progress-mode
+      :progress-max="100"
+      :progress-color="['#FF6B6B', '#4ECDC4']"
+      progress-bg-color="rgba(200, 200, 200, 0.3)"
+      inner-radius="70%"
+      radius="85%"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[{ name: '进度', value: 65 }]"
+    progress-mode
+    :progress-max="100"
+    :progress-color="['#FF6B6B', '#4ECDC4']"
+    progress-bg-color="rgba(200, 200, 200, 0.3)"
+    inner-radius="70%"
+    radius="85%"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+### 自定义最大值
+
+通过 `progress-max` 可以设置进度的最大值，用于计算百分比。例如，如果最大值是 200，当前值是 60，则显示 30%。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="[{ name: '进度', value: 60 }]"
+      progress-mode
+      :progress-max="200"
+      :progress-color="['#A8E6CF', '#3D5A80']"
+      inner-radius="75%"
+      radius="90%"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[{ name: '进度', value: 60 }]"
+    progress-mode
+    :progress-max="200"
+    :progress-color="['#A8E6CF', '#3D5A80']"
+    inner-radius="75%"
+    radius="90%"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+## 玫瑰图
+
+通过 `rose-type` 属性可以将饼图转换为玫瑰图。玫瑰图有两种模式：
+- `'radius'`：扇形的半径根据数值大小而变化
+- `'area'`：扇形的面积根据数值大小而变化
+
+### 半径玫瑰图
+
+使用 `rose-type="radius"` 创建半径玫瑰图，扇形的半径大小反映数值大小。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="roseData"
+      rose-type="radius"
+      inner-radius="10%"
+      radius="70%"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[
+      { name: '数据1', value: 100 },
+      { name: '数据2', value: 200 },
+      { name: '数据3', value: 300 },
+      { name: '数据4', value: 150 },
+      { name: '数据5', value: 250 },
+      { name: '数据6', value: 180 }
+    ]"
+    rose-type="radius"
+    inner-radius="10%"
+    radius="70%"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+### 面积玫瑰图
+
+使用 `rose-type="area"` 创建面积玫瑰图，扇形的面积大小反映数值大小。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="roseData"
+      rose-type="area"
+      inner-radius="10%"
+      radius="70%"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[
+      { name: '数据1', value: 100 },
+      { name: '数据2', value: 200 },
+      { name: '数据3', value: 300 },
+      { name: '数据4', value: 150 },
+      { name: '数据5', value: 250 },
+      { name: '数据6', value: 180 }
+    ]"
+    rose-type="area"
+    inner-radius="10%"
+    radius="70%"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+### 玫瑰图切换
+
+可以通过动态切换 `rose-type` 来在普通饼图和玫瑰图之间切换。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="roseData"
+      :rose-type="roseType"
+      inner-radius="10%"
+      radius="70%"
+    />
+  </div>
+  <div style="margin-top: 16px;">
+    <el-radio-group v-model="roseType">
+      <el-radio :label="false">普通饼图</el-radio>
+      <el-radio label="radius">半径玫瑰图</el-radio>
+      <el-radio label="area">面积玫瑰图</el-radio>
+    </el-radio-group>
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <div>
+    <div style="width: 100%; height: 400px;">
+      <MChartPie
+        :data="data"
+        :rose-type="roseType"
+        inner-radius="10%"
+        radius="70%"
+      />
+    </div>
+    <div style="margin-top: 16px;">
+      <el-radio-group v-model="roseType">
+        <el-radio :label="false">普通饼图</el-radio>
+        <el-radio label="radius">半径玫瑰图</el-radio>
+        <el-radio label="area">面积玫瑰图</el-radio>
+      </el-radio-group>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { MChartPie } from '@jqkgg/m-ui'
+
+const data = ref([
+  { name: '数据1', value: 100 },
+  { name: '数据2', value: 200 },
+  { name: '数据3', value: 300 },
+  { name: '数据4', value: 150 },
+  { name: '数据5', value: 250 },
+  { name: '数据6', value: 180 }
+])
+const roseType = ref(false)
+</script>
+```
+</CodeBlock>
+
+## 百分比配置
+
+通过 `percent-precision` 属性可以控制百分比的小数位数，该属性同时影响标签、图例和 tooltip 中的百分比显示。通过 `tooltip-show-percent` 属性可以控制 tooltip 中是否显示百分比。
+
+### 百分比精度
+
+通过 `percent-precision` 可以设置百分比的小数位数，0 表示不显示小数，1 表示显示一位小数，以此类推。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="data3"
+      :percent-precision="2"
+      :show-percent="true"
+      :legend-show-percent="true"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[
+      { name: '系列1', value: 100 },
+      { name: '系列2', value: 200 },
+      { name: '系列3', value: 300 }
+    ]"
+    :percent-precision="2"
+    :show-percent="true"
+    :legend-show-percent="true"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
+### Tooltip 百分比显示
+
+通过 `tooltip-show-percent` 属性可以控制鼠标悬停时 tooltip 中是否显示百分比。
+
+<Demo>
+  <div style="width: 100%; height: 400px;">
+    <MChartPie
+      :data="data3"
+      :tooltip-show-percent="true"
+      :percent-precision="1"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPie
+    :data="[
+      { name: '系列1', value: 100 },
+      { name: '系列2', value: 200 },
+      { name: '系列3', value: 300 }
+    ]"
+    :tooltip-show-percent="true"
+    :percent-precision="1"
+  />
+</template>
+
+<script setup>
+import { MChartPie } from '@jqkgg/m-ui'
+</script>
+```
+</CodeBlock>
+
 ## 图例显示配置
 
 通过 `legend-show-value` 和 `legend-show-percent` 属性可以控制图例中是否显示数值和百分比。
@@ -558,6 +958,14 @@ import { MChartPie } from '@jqkgg/m-ui'
 | showValue | 是否显示数值 | boolean | — | false |
 | legendShowValue | 图例是否显示数值 | boolean | — | true |
 | legendShowPercent | 图例是否显示百分比 | boolean | — | true |
+| percentPrecision | 百分比小数位数，控制标签、图例和 tooltip 中百分比的精度 | number | — | 0 |
+| tooltipShowPercent | tooltip 中是否显示百分比 | boolean | — | true |
+| progressMode | 是否启用进度环模式，启用后显示为单值进度环，中心显示百分比 | boolean | — | false |
+| progressMax | 进度环的最大值（用于计算百分比） | number | — | 100 |
+| progressColor | 进度环的渐变色配置，格式为 [起始色, 结束色] | string[] | — | `['#87CEEB', '#4169E1']` |
+| progressBgColor | 进度环未完成部分的颜色 | string | — | `rgba(200, 200, 200, 0.2)` |
+| progressLabel | 进度环中心显示的文案（显示在百分比上方） | string | — | 完成率 |
+| roseType | 玫瑰图类型 | string \| false | radius / area / false | false |
 | options | 完全自定义的 ECharts 配置项，传入后将以 options 为准，忽略其他属性 | object<br>**注意**：`options` 的类型定义请参考 [ECharts 饼图配置项文档](https://echarts.apache.org/zh/option.html#series-pie.type) | — | undefined |
 
 ### ChartPieDataItem

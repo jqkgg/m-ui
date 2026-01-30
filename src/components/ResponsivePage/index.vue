@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 import type { ResponsivePageProps } from "./types";
 
 defineOptions({

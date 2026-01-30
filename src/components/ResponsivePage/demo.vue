@@ -1,5 +1,5 @@
 <script setup name="ResponsivePage">
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 const style = ref({})
 const useResponsive = () => {

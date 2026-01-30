@@ -4,6 +4,8 @@ export interface ChartBarSeries {
   name: string
   data: number[]
   color?: string
+  /** 堆叠标识，相同 stack 值的系列会堆叠在一起 */
+  stack?: string
 }
 
 export interface ChartBarProps {

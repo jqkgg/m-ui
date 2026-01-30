@@ -98,6 +98,7 @@ const buildOption = (): echarts.EChartsOption => {
         name: item.name,
         type: "bar",
         data: item.data,
+        stack: item.stack, // 支持堆叠功能
         itemStyle: {
           color: seriesColor,
         },

@@ -40,6 +40,14 @@ const props = withDefaults(defineProps<ChartPieProps>(), {
   showValue: false,
   legendShowValue: true,
   legendShowPercent: true,
+  percentPrecision: 0, // 默认百分比不显示小数
+  tooltipShowPercent: true, // 默认 tooltip 显示百分比
+  progressMode: false, // 是否启用进度环模式
+  progressMax: 100, // 进度环最大值
+  progressColor: () => ["#87CEEB", "#4169E1"], // 进度环渐变色 [起始色, 结束色]
+  progressBgColor: "rgba(200, 200, 200, 0.2)", // 进度环背景色
+  progressLabel: "完成率", // 进度环中心显示的文案
+  roseType: false,
 });
 
 const chartContainer = ref<HTMLDivElement | null>(null);
@@ -49,6 +57,13 @@ let chartInstance: echarts.ECharts | null = null;
 const totalValue = computed(() => {
   return props.data?.reduce((sum, item) => sum + item.value, 0) || 0;
 });
+
+// 格式化百分比
+const formatPercent = (value: number, total: number): string => {
+  if (total === 0) return "0";
+  const percent = (value / total) * 100;
+  return percent.toFixed(props.percentPrecision);
+};
 
 // 计算图表实际高度
 const computedHeight = computed(() => {
@@ -66,6 +81,87 @@ const buildOption = (): echarts.EChartsOption => {
   }
 
   const data = props.data || [];
+  
+  // 进度环模式
+  if (props.progressMode) {
+    const progressValue = data.length > 0 ? data[0].value : 0;
+    const formattedPercent = formatPercent(progressValue, props.progressMax);
+    
+    return {
+      color: props.colors,
+      legend: {
+        show: false,
+      },
+      tooltip: {
+        trigger: "item",
+        formatter: () => {
+          return `${formattedPercent}%`;
+        },
+      },
+      series: [
+        {
+          type: "pie",
+          radius: [props.innerRadius, props.radius],
+          center: ["50%", "50%"],
+          startAngle: 90, // 从顶部开始
+          clockwise: true,
+          data: [
+            {
+              value: progressValue,
+              name: "进度",
+              itemStyle: {
+                color: {
+                  type: "linear",
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [
+                    { offset: 0, color: props.progressColor[0] },
+                    { offset: 1, color: props.progressColor[1] },
+                  ],
+                },
+              },
+            },
+            {
+              value: Math.max(0, props.progressMax - progressValue),
+              name: "剩余",
+              itemStyle: {
+                color: props.progressBgColor,
+              },
+              label: {
+                show: false,
+              },
+              labelLine: {
+                show: false,
+              },
+            },
+          ],
+          label: {
+            show: true,
+            position: "center",
+            formatter: `{label|${props.progressLabel}}\n{percent|${formattedPercent}%}`,
+            rich: {
+              label: {
+                fontSize: 16,
+                color: "#666",
+                lineHeight: 24,
+              },
+              percent: {
+                fontSize: 32,
+                fontWeight: "bold",
+                color: "#333",
+                lineHeight: 40,
+              },
+            },
+          },
+          emphasis: {
+            disabled: true,
+          },
+        } as PieSeriesOption,
+      ],
+    };
+  }
   
   // 转换数据格式，应用自定义颜色
   const seriesData = data.map((item: ChartPieDataItem, index: number) => ({
@@ -87,7 +183,7 @@ const buildOption = (): echarts.EChartsOption => {
           const item = data.find((d) => d.name === name);
           if (!item) return name;
           
-          const percent = totalValue.value > 0 ? ((item.value / totalValue.value) * 100).toFixed(0) : "0";
+          const percent = formatPercent(item.value, totalValue.value);
           let formatterText = name;
           
           if (props.legendShowValue && props.legendShowPercent) {
@@ -120,7 +216,8 @@ const buildOption = (): echarts.EChartsOption => {
         position: props.labelPosition,
         formatter: (params: any) => {
           if (props.labelPosition === "center") {
-            return `{name|${params.name}}\n{value|${params.value}}\n{percent|${params.percent}%}`;
+            const percent = formatPercent(params.value, totalValue.value);
+            return `{name|${params.name}}\n{value|${params.value}}\n{percent|${percent}%}`;
           }
           
           let formatterText = "";
@@ -129,7 +226,8 @@ const buildOption = (): echarts.EChartsOption => {
           }
           if (props.showPercent) {
             if (formatterText) formatterText += "\n";
-            formatterText += `${params.percent}%`;
+            const percent = formatPercent(params.value, totalValue.value);
+            formatterText += `${percent}%`;
           }
           return formatterText || params.name;
         },
@@ -173,8 +271,12 @@ const buildOption = (): echarts.EChartsOption => {
     tooltip: {
       trigger: "item",
       formatter: (params: any) => {
-        const percent = totalValue.value > 0 ? ((params.value / totalValue.value) * 100).toFixed(2) : "0";
-        return `${params.name}<br/>${params.value}个 (${percent}%)`;
+        let tooltipText = `${params.name}<br/>${params.value}个`;
+        if (props.tooltipShowPercent) {
+          const percent = formatPercent(params.value, totalValue.value);
+          tooltipText += ` (${percent}%)`;
+        }
+        return tooltipText;
       },
     },
     series: [
@@ -183,6 +285,7 @@ const buildOption = (): echarts.EChartsOption => {
         radius: [props.innerRadius, props.radius],
         center: getPieCenter(),
         data: seriesData,
+        roseType: props.roseType, // 支持玫瑰图
         label: labelConfig,
         labelLine: {
           show: props.showLabel && props.labelPosition === "outside",
@@ -281,6 +384,14 @@ watch(
     props.showValue,
     props.legendShowValue,
     props.legendShowPercent,
+    props.percentPrecision,
+    props.tooltipShowPercent,
+    props.progressMode,
+    props.progressMax,
+    props.progressColor,
+    props.progressBgColor,
+    props.progressLabel,
+    props.roseType,
     props.options,
   ],
   () => {

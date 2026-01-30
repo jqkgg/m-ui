@@ -185,6 +185,7 @@
                 :data="mapData"
                 :height="600"
                 :show-legend="true"
+                :roam="true"
                 :legend-position="'right'"
                 :legend-title="'序时进度'"
                 :show-label="true"

@@ -4,6 +4,10 @@ import { resolve } from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig({
+  server: {
+      host: true,
+      open: true,
+  },
   plugins: [
     vue(),
     AutoImport({

@@ -1,6 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
-import { MButton, MInput, MChartBar, MChartBar3D, MChartPie, MChartPie3D, MChartLine, MChartMapCq, MChartMapCq3D, MChartWordCloud, MChartGraph, MChartRadar, MChartTree, MChartSunburst, MResponsivePage, MScrollBox, MEllipsisText, MGradationText } from '@jqkgg/m-ui'
+import { MButton, MInput, MChartBar, MChartBar3D, MChartPie, MChartPie3D, MChartLine, MChartMapCq, MChartMapCq3D, MChartWordCloud, MChartGraph, MChartRadar, MChartTree, MChartSunburst, MChartKLine, MResponsivePage, MScrollBox, MEllipsisText, MGradationText } from '@jqkgg/m-ui'
 import Demo from '../components/Demo.vue'
 import CodeBlock from '../components/CodeBlock.vue'
 import ElementPlus from 'element-plus'
@@ -28,6 +28,7 @@ export default {
     app.component('MChartRadar', MChartRadar)
     app.component('MChartTree', MChartTree)
     app.component('MChartSunburst', MChartSunburst)
+    app.component('MChartKLine', MChartKLine)
     app.component('MResponsivePage', MResponsivePage)
     app.component('MScrollBox', MScrollBox)
     app.component('MEllipsisText', MEllipsisText)

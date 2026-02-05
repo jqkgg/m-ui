@@ -83,6 +83,7 @@ export default defineConfig({
             { text: 'ChartRadar 雷达图', link: '/components/radar' },
             { text: 'ChartTree 树形图', link: '/components/tree' },
             { text: 'ChartSunburst 旭日图', link: '/components/sunburst' },
+            { text: 'ChartKLine K线图', link: '/components/kline' },
           ]
         }
       ]

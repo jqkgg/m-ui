@@ -9,9 +9,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from "vue";
 import * as echarts from "echarts";
-import "echarts-wordcloud";
 import { useResizeObserver } from "@vueuse/core";
 import type { ChartWordCloudProps, ChartWordCloudDataItem } from "./types";
+
+// 只在客户端导入 echarts-wordcloud
+if (typeof window !== 'undefined') {
+  import('echarts-wordcloud');
+}
 
 defineOptions({
   name: "MChartWordCloud",

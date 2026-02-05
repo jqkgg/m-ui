@@ -45,10 +45,10 @@ export default defineConfig({
       }
     },
     optimizeDeps: {
-      include: ['echarts', 'element-plus']
+      include: ['echarts', 'element-plus', 'echarts-wordcloud']
     },
     ssr: {
-      noExternal: ['echarts', 'element-plus']
+      noExternal: ['echarts', 'element-plus', 'echarts-wordcloud']
     }
   },
   themeConfig: {

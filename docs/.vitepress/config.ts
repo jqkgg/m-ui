@@ -85,6 +85,7 @@ export default defineConfig({
             { text: 'ChartSunburst 旭日图', link: '/components/sunburst' },
             { text: 'ChartKLine K线图', link: '/components/kline' },
             { text: 'ChartPictorialBar 锥形柱状图', link: '/components/pictorialbar' },
+            { text: 'ChartFunnel 漏斗图', link: '/components/funnelchart' },
           ]
         }
       ]

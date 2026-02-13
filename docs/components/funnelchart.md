@@ -123,38 +123,47 @@ const pyramidOptions = ref({
     trigger: 'item',
     formatter: '{b} : {c}人'
   },
-  color: ['#0033cc', '#0066cc', '#0099cc', '#66cc66', '#99cc33', '#ffcc00'],
+  color: ['#FFD700', '#90EE90', '#3CB371', '#00BFFF', '#1E90FF', '#00008B'],
   series: [
     {
       name: 'Pyramid',
       type: 'funnel',
-      width: '60%',
+      width: '40%',
       height: '80%',
-      left: '20%',
+      left: '30%',
       sort: 'ascending',
-      gap: 2,
+      gap: 0,
       label: {
         show: true,
         position: 'right',
         formatter: '{b}   {c}人',
-        fontSize: 14,
+        fontSize: 16,
         color: '#fff'
       },
+      labelLine: {
+        show: true,
+        length: 30,
+        lineStyle: {
+          width: 1,
+          type: 'solid',
+          color: '#fff'
+        }
+      },
       itemStyle: {
-        borderColor: 'transparent',
+        borderColor: '#fff',
         borderWidth: 0,
-        shadowBlur: 20,
+        shadowBlur: 30,
         shadowOffsetX: 0,
-        shadowOffsetY: 5,
-        shadowColor: 'rgba(0, 0, 0, 0.4)'
+        shadowOffsetY: 10,
+        shadowColor: 'rgba(0, 0, 0, 0.5)'
       },
       data: [
-        { value: 2057, name: 'F类' },
-        { value: 1331, name: 'E类' },
-        { value: 150, name: 'D类' },
-        { value: 237, name: 'C类' },
-        { value: 79, name: 'B类' },
-        { value: 8, name: 'A类' }
+        { value: 60, name: 'A类' },
+        { value: 80, name: 'B类' },
+        { value: 100, name: 'C类' },
+        { value: 120, name: 'D类' },
+        { value: 140, name: 'E类' },
+        { value: 160, name: 'F类' }
       ]
     }
   ]
@@ -295,38 +304,47 @@ const pyramidOptions = ref({
     trigger: 'item',
     formatter: '{b} : {c}人'
   },
-  color: ['#0033cc', '#0066cc', '#0099cc', '#66cc66', '#99cc33', '#ffcc00'],
+  color: ['#FFD700', '#90EE90', '#3CB371', '#00BFFF', '#1E90FF', '#00008B'],
   series: [
     {
       name: 'Pyramid',
       type: 'funnel',
-      width: '60%',
+      width: '40%',
       height: '80%',
-      left: '20%',
+      left: '30%',
       sort: 'ascending',
-      gap: 2,
+      gap: 0,
       label: {
         show: true,
         position: 'right',
         formatter: '{b}   {c}人',
-        fontSize: 14,
+        fontSize: 16,
         color: '#fff'
       },
+      labelLine: {
+        show: true,
+        length: 30,
+        lineStyle: {
+          width: 1,
+          type: 'solid',
+          color: '#fff'
+        }
+      },
       itemStyle: {
-        borderColor: 'transparent',
+        borderColor: '#fff',
         borderWidth: 0,
-        shadowBlur: 20,
+        shadowBlur: 30,
         shadowOffsetX: 0,
-        shadowOffsetY: 5,
-        shadowColor: 'rgba(0, 0, 0, 0.4)'
+        shadowOffsetY: 10,
+        shadowColor: 'rgba(0, 0, 0, 0.5)'
       },
       data: [
-        { value: 2057, name: 'F类' },
-        { value: 1331, name: 'E类' },
-        { value: 150, name: 'D类' },
-        { value: 237, name: 'C类' },
-        { value: 79, name: 'B类' },
-        { value: 8, name: 'A类' }
+        { value: 60, name: 'A类' },
+        { value: 80, name: 'B类' },
+        { value: 100, name: 'C类' },
+        { value: 120, name: 'D类' },
+        { value: 140, name: 'E类' },
+        { value: 160, name: 'F类' }
       ]
     }
   ]

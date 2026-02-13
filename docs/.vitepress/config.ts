@@ -86,6 +86,7 @@ export default defineConfig({
             { text: 'ChartKLine K线图', link: '/components/kline' },
             { text: 'ChartPictorialBar 锥形柱状图', link: '/components/pictorialbar' },
             { text: 'ChartFunnel 漏斗图', link: '/components/funnelchart' },
+            { text: 'ChartGauge 仪表盘', link: '/components/gaugechart' },
           ]
         }
       ]

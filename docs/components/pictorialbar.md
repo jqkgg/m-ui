@@ -327,6 +327,566 @@ import { MChartPictorialBar } from '@jqkgg/m-ui'
 
 </CodeBlock>
 
+## 电池进度条
+
+通过 `options` 属性实现电池进度条效果。
+
+<Demo>
+  <div style="width: 100%; height: 500px; background-color: #0f375f;">
+    <MChartPictorialBar
+      :options="{
+        backgroundColor: '#0f375f',
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'none'
+          },
+          formatter: '{b}: {c}%'
+        },
+        grid: {
+          left: '5%',
+          right: '5%',
+          top: '5%',
+          bottom: '5%',
+          containLabel: true
+        },
+        xAxis: {
+          show: false,
+          type: 'value'
+        },
+        yAxis: [{
+          type: 'category',
+          inverse: true,
+          axisLabel: {
+            show: true,
+            textStyle: {
+              color: '#fff'
+            }
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          },
+          data: ['指标1', '指标2', '指标3', '指标4']
+        }],
+        series: [
+          {
+            name: '进度',
+            type: 'pictorialBar',
+            symbol: 'rect',
+            symbolRepeat: 'fixed',
+            symbolMargin: '5%',
+            symbolClip: true,
+            symbolSize: [10, 20],
+            symbolBoundingData: 100,
+            data: [27.6, 65.9, 23, 85.8],
+            markLine: {
+              symbol: 'none',
+              label: {
+                formatter: '{c}%',
+                position: 'start'
+              },
+              lineStyle: {
+                color: 'pink',
+                type: 'dotted',
+                opacity: 0.2,
+                width: 2
+              },
+              data: [
+                {
+                  type: 'max'
+                }
+              ]
+            },
+            z: 10,
+            itemStyle: {
+              normal: {
+                color: '#00b5f6'
+              }
+            },
+            label: {
+              show: true,
+              position: 'right',
+              offset: [10, 0],
+              formatter: '{c}%',
+              color: '#fff',
+              fontSize: 14
+            }
+          },
+          {
+            name: '背景',
+            type: 'pictorialBar',
+            itemStyle: {
+              normal: {
+                color: '#1a4b77',
+                opacity: 0.2
+              }
+            },
+            animationDuration: 0,
+            symbolRepeat: 'fixed',
+            symbolMargin: '5%',
+            symbol: 'rect',
+            symbolSize: [10, 20],
+            symbolBoundingData: 100,
+            data: [100, 100, 100, 100],
+            z: 5
+          }
+        ]
+      }"
+      height="500px"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPictorialBar :options="options" height="500px" />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { MChartPictorialBar } from '@jqkgg/m-ui'
+
+const options = ref({
+  backgroundColor: '#0f375f',
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: { type: 'none' },
+    formatter: '{b}: {c}%'
+  },
+  grid: {
+    left: '5%',
+    right: '5%',
+    top: '5%',
+    bottom: '5%',
+    containLabel: true
+  },
+  xAxis: { show: false, type: 'value' },
+  yAxis: [{
+    type: 'category',
+    inverse: true,
+    axisLabel: { show: true, textStyle: { color: '#fff' } },
+    splitLine: { show: false },
+    axisTick: { show: false },
+    axisLine: { show: false },
+    data: ['指标1', '指标2', '指标3', '指标4']
+  }],
+  series: [
+    {
+      name: '进度',
+      type: 'pictorialBar',
+      symbol: 'rect',
+      symbolRepeat: 'fixed',
+      symbolMargin: '5%',
+      symbolClip: true,
+      symbolSize: [10, 20],
+      symbolBoundingData: 100,
+      data: [27.6, 65.9, 23, 85.8],
+      z: 10,
+      itemStyle: { normal: { color: '#00b5f6' } },
+      label: {
+        show: true,
+        position: 'right',
+        offset: [10, 0],
+        formatter: '{c}%',
+        color: '#fff',
+        fontSize: 14
+      }
+    },
+    {
+      name: '背景',
+      type: 'pictorialBar',
+      itemStyle: { normal: { color: '#1a4b77', opacity: 0.2 } },
+      animationDuration: 0,
+      symbolRepeat: 'fixed',
+      symbolMargin: '5%',
+      symbol: 'rect',
+      symbolSize: [10, 20],
+      symbolBoundingData: 100,
+      data: [100, 100, 100, 100],
+      z: 5
+    }
+  ]
+})
+</script>
+```
+
+</CodeBlock>
+
+## 3D立体柱状图
+
+通过 `pictorialBar` 实现 3D 立体效果。
+
+<Demo>
+  <div style="width: 100%; height: 500px;">
+    <MChartPictorialBar
+      :options="{
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'none' }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          data: ['01月', '02月', '03月', '04月', '05月', '06月', '07月', '08月', '09月', '10月', '11月', '12月'],
+          axisTick: { show: false },
+          axisLine: { show: false },
+          axisLabel: { color: '#e54035' }
+        },
+        yAxis: {
+          splitLine: { show: false },
+          axisTick: { show: false },
+          axisLine: { show: false },
+          axisLabel: { show: false }
+        },
+        series: [
+          {
+            name: '柱底部',
+            type: 'pictorialBar',
+            symbolSize: [26, 10],
+            symbolOffset: [0, 5],
+            z: 12,
+            itemStyle: {
+              normal: {
+                color: '#14b1eb'
+              }
+            },
+            data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+          },
+          {
+            name: '柱下半部',
+            type: 'bar',
+            barWidth: 26,
+            barGap: '-100%',
+            itemStyle: {
+              normal: {
+                color: '#14b1eb',
+                opacity: 0.7
+              }
+            },
+            data: [60, 70, 80, 90, 60, 70, 80, 90, 10, 20, 30, 40]
+          },
+          {
+            name: '柱顶部',
+            type: 'pictorialBar',
+            symbolSize: [26, 10],
+            symbolOffset: [0, -5],
+            z: 12,
+            symbolPosition: 'end',
+            itemStyle: {
+              normal: {
+                color: '#14b1eb'
+              }
+            },
+            data: [60, 70, 80, 90, 60, 70, 80, 90, 10, 20, 30, 40]
+          },
+          {
+            name: '顶部数值',
+            type: 'pictorialBar',
+            symbolSize: [26, 10],
+            symbolOffset: [0, -5],
+            z: 12,
+            symbolPosition: 'end',
+            itemStyle: {
+              normal: {
+                color: 'transparent'
+              }
+            },
+            label: {
+              show: true,
+              position: 'top',
+              fontSize: 14,
+              color: '#fff',
+              formatter: '{c}%'
+            },
+            data: [60, 70, 80, 90, 60, 70, 80, 90, 10, 20, 30, 40]
+          },
+          {
+            name: '目标值',
+            type: 'line',
+            symbol: 'none',
+            itemStyle: {
+              normal: {
+                color: '#ff3b3b',
+                lineStyle: {
+                  type: 'dashed'
+                }
+              }
+            },
+            markLine: {
+              symbol: ['none', 'arrow'],
+              label: {
+                formatter: '目标值\n{c}%',
+                position: 'end'
+              },
+              data: [
+                {
+                  yAxis: 80
+                }
+              ]
+            }
+          }
+        ]
+      }"
+      height="500px"
+      background-color="#0e2147"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPictorialBar :options="options" height="500px" />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { MChartPictorialBar } from '@jqkgg/m-ui'
+
+const options = ref({
+  backgroundColor: '#0e2147',
+  tooltip: { trigger: 'axis', axisPointer: { type: 'none' } },
+  grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+  xAxis: {
+    data: ['01月', '02月', '03月', '04月', '05月', '06月', '07月', '08月', '09月', '10月', '11月', '12月'],
+    axisTick: { show: false },
+    axisLine: { show: false },
+    axisLabel: { color: '#e54035' }
+  },
+  yAxis: { show: false },
+  series: [
+    {
+      name: '柱底部',
+      type: 'pictorialBar',
+      symbolSize: [26, 10],
+      symbolOffset: [0, 5],
+      z: 12,
+      itemStyle: { normal: { color: '#14b1eb' } },
+      data: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    },
+    {
+      name: '柱下半部',
+      type: 'bar',
+      barWidth: 26,
+      barGap: '-100%',
+      itemStyle: { normal: { color: '#14b1eb', opacity: 0.7 } },
+      data: [60, 70, 80, 90, 60, 70, 80, 90, 10, 20, 30, 40]
+    },
+    {
+      name: '柱顶部',
+      type: 'pictorialBar',
+      symbolSize: [26, 10],
+      symbolOffset: [0, -5],
+      z: 12,
+      symbolPosition: 'end',
+      itemStyle: { normal: { color: '#14b1eb' } },
+      data: [60, 70, 80, 90, 60, 70, 80, 90, 10, 20, 30, 40]
+    },
+    {
+      name: '顶部数值',
+      type: 'pictorialBar',
+      symbolSize: [26, 10],
+      symbolOffset: [0, -5],
+      z: 12,
+      symbolPosition: 'end',
+      itemStyle: { normal: { color: 'transparent' } },
+      label: { show: true, position: 'top', fontSize: 14, color: '#fff', formatter: '{c}%' },
+      data: [60, 70, 80, 90, 60, 70, 80, 90, 10, 20, 30, 40]
+    },
+    {
+      name: '目标值',
+      type: 'line',
+      symbol: 'none',
+      itemStyle: { normal: { color: '#ff3b3b', lineStyle: { type: 'dashed' } } },
+      markLine: {
+        symbol: ['none', 'arrow'],
+        label: { formatter: '目标值\n{c}%', position: 'end' },
+        data: [{ yAxis: 80 }]
+      }
+    }
+  ]
+})
+</script>
+```
+
+</CodeBlock>
+
+## 立体堆叠柱状图
+
+实现立体堆叠柱状图效果。
+
+<Demo>
+  <div style="width: 100%; height: 500px;">
+    <MChartPictorialBar
+      :options="{
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'shadow' }
+        },
+        legend: {
+          data: ['新增用户数量', '邀请新用户数量'],
+          textStyle: { color: '#666' }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          axisLine: { lineStyle: { color: '#ccc' } },
+          axisLabel: { color: '#666' }
+        },
+        yAxis: {
+          splitLine: { lineStyle: { color: '#eee' } },
+          axisLine: { show: false },
+          axisLabel: { color: '#666' }
+        },
+        series: [
+          // 底部
+          {
+            z: 1,
+            name: '新增用户数量',
+            type: 'pictorialBar',
+            symbolPosition: 'end',
+            data: [320, 302, 120, 100, 540, 123, 350, 666, 333, 123, 213, 100],
+            symbol: 'diamond',
+            symbolOffset: ['-50%', '-50%'],
+            symbolSize: [26, 15],
+            itemStyle: {
+              color: '#00d0ff'
+            }
+          },
+          {
+            z: 1,
+            type: 'bar',
+            name: '新增用户数量',
+            barWidth: 26,
+            data: [320, 302, 120, 100, 540, 123, 350, 666, 333, 123, 213, 100],
+            itemStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 1,
+                y2: 0,
+                colorStops: [
+                  { offset: 0, color: '#00d0ff' },
+                  { offset: 1, color: '#00acff' }
+                ]
+              }
+            }
+          },
+          {
+            z: 1,
+            name: '新增用户数量',
+            type: 'pictorialBar',
+            symbolPosition: 'start',
+            data: [320, 302, 120, 100, 540, 123, 350, 666, 333, 123, 213, 100],
+            symbol: 'diamond',
+            symbolOffset: ['-50%', '50%'],
+            symbolSize: [26, 15],
+            itemStyle: {
+              color: '#00acff'
+            }
+          },
+          // 顶部
+          {
+            z: 2,
+            name: '邀请新用户数量',
+            type: 'pictorialBar',
+            symbolPosition: 'end',
+            data: [120, 102, 90, 150, 120, 123, 140, 166, 133, 177, 113, 200],
+            symbol: 'diamond',
+            symbolOffset: ['50%', '-50%'],
+            symbolSize: [26, 15],
+            itemStyle: {
+              color: '#ffaa80'
+            }
+          },
+          {
+            z: 2,
+            type: 'bar',
+            name: '邀请新用户数量',
+            barWidth: 26,
+            data: [120, 102, 90, 150, 120, 123, 140, 166, 133, 177, 113, 200],
+            itemStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 1,
+                y2: 0,
+                colorStops: [
+                  { offset: 0, color: '#ff8880' },
+                  { offset: 1, color: '#ffaa80' }
+                ]
+              }
+            },
+            barGap: 0
+          },
+          {
+            z: 2,
+            name: '邀请新用户数量',
+            type: 'pictorialBar',
+            symbolPosition: 'start',
+            data: [120, 102, 90, 150, 120, 123, 140, 166, 133, 177, 113, 200],
+            symbol: 'diamond',
+            symbolOffset: ['50%', '50%'],
+            symbolSize: [26, 15],
+            itemStyle: {
+              color: '#ff8880'
+            }
+          }
+        ]
+      }"
+      height="500px"
+    />
+  </div>
+</Demo>
+
+<CodeBlock>
+
+```vue
+<template>
+  <MChartPictorialBar :options="options" height="500px" />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { MChartPictorialBar } from '@jqkgg/m-ui'
+
+const options = ref({
+  tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+  legend: { data: ['新增用户数量', '邀请新用户数量'] },
+  grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+  xAxis: {
+    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+  },
+  yAxis: {},
+  series: [
+    // ... 省略具体配置，参考上方 Demo
+  ]
+})
+</script>
+```
+
+</CodeBlock>
+
 ## API
 
 ### Props
